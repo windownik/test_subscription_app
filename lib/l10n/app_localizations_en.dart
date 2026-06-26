@@ -25,4 +25,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mainScreen => 'Main screen';
+
+  @override
+  String get languageEnSymbol => 'EN';
+
+  @override
+  String get languageRuSymbol => 'RU';
 }

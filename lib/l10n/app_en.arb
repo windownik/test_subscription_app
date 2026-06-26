@@ -5,5 +5,7 @@
   "noSubscription": "You don't have a subscription, choose a plan",
   "monthlyPlan": "Monthly",
   "yearlyPlan": "Yearly",
-  "mainScreen": "Main screen"
+  "mainScreen": "Main screen",
+  "languageEnSymbol": "EN",
+  "languageRuSymbol": "RU"
 }

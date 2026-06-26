@@ -29,24 +29,16 @@ class CircularIconButton extends StatefulWidget {
 }
 
 class _CircularIconButtonState extends State<CircularIconButton> {
-  bool _isPressed = false;
-
   @override
   Widget build(BuildContext context) {
-    final scale = widget.isActive && _isPressed
-        ? CircularIconButton.pressedScale
-        : 1.0;
-
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: widget.isActive ? widget.onTap : null,
-      onTapDown: widget.isActive ? (_) => onTapDown() : null,
-      onTapUp: widget.isActive ? (_) => onTapUp() : null,
-      onTapCancel: widget.isActive ? onTapCancel : null,
       child: AnimatedContainer(
         duration: CircularIconButton.pressAnimationDuration,
         curve: Curves.easeInOut,
-        width: widget.size * scale,
-        height: widget.size * scale,
+        width: widget.size,
+        height: widget.size,
         decoration: BoxDecoration(
           color: context.resolveCircularIconButtonBackground(
             isActive: widget.isActive,
@@ -58,10 +50,7 @@ class _CircularIconButtonState extends State<CircularIconButton> {
                 isActive: widget.isActive,
               ),
               blurRadius: CircularIconButton.shadowBlurRadius,
-              offset: const Offset(
-                0,
-                CircularIconButton.shadowOffsetY,
-              ),
+              offset: const Offset(0, CircularIconButton.shadowOffsetY),
             ),
           ],
         ),
@@ -71,17 +60,5 @@ class _CircularIconButtonState extends State<CircularIconButton> {
         ),
       ),
     );
-  }
-
-  void onTapDown() {
-    setState(() => _isPressed = true);
-  }
-
-  void onTapUp() {
-    setState(() => _isPressed = false);
-  }
-
-  void onTapCancel() {
-    setState(() => _isPressed = false);
   }
 }

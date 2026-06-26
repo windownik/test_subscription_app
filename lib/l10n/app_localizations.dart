@@ -133,6 +133,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Main screen'**
   String get mainScreen;
+
+  /// No description provided for @languageEnSymbol.
+  ///
+  /// In en, this message translates to:
+  /// **'EN'**
+  String get languageEnSymbol;
+
+  /// No description provided for @languageRuSymbol.
+  ///
+  /// In en, this message translates to:
+  /// **'RU'**
+  String get languageRuSymbol;
 }
 
 class _AppLocalizationsDelegate

@@ -1,13 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 extension CupertinoThemeColorsExtension on BuildContext {
-  Color get circularIconButtonBackground {
-    final theme = CupertinoTheme.of(this);
-
-    return theme.brightness == Brightness.light
-        ? CupertinoColors.white
-        : CupertinoColors.secondarySystemBackground;
-  }
+  Color get circularIconButtonBackground => CupertinoColors.white;
 
   Color get circularIconButtonShadow {
     return CupertinoColors.systemGrey

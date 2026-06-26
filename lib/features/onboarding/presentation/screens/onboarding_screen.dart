@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
+import 'package:test_payment_app/core/locale/app_language_localization_extension.dart';
+import 'package:test_payment_app/core/locale/app_locale_scope.dart';
+import 'package:test_payment_app/core/presentation/widgets/circular_icon_button.dart';
 import 'package:test_payment_app/features/onboarding/presentation/onboarding_layout.dart';
 import 'package:test_payment_app/features/onboarding/presentation/widgets/onboarding_page_indicator.dart';
 import 'package:test_payment_app/features/onboarding/presentation/widgets/onboarding_start_body.dart';
@@ -33,6 +36,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final language = AppLocaleScope.of(context).language;
+    final textStyle = CupertinoTheme.of(context).textTheme.textStyle;
 
     return CupertinoPageScaffold(
       child: Stack(
@@ -50,6 +55,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 onStartWorkPressed: () => onStartWorkPressed(context),
               ),
             ],
+          ),
+          Positioned(
+            top: 50,
+            right: 10,
+            child: CircularIconButton(
+              size: OnboardingLayout.languageButtonSize,
+              padding: OnboardingLayout.languageButtonPadding,
+              onTap: () => onLanguagePressed(context),
+              child: Text(
+                language.symbol(l10n),
+                style: textStyle.copyWith(fontWeight: FontWeight.w600),
+              ),
+            ),
           ),
           Positioned(
             left: 0,
@@ -72,6 +90,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       duration: OnboardingLayout.pageTransitionDuration,
       curve: Curves.easeInOut,
     );
+  }
+
+  void onLanguagePressed(BuildContext context) {
+    AppLocaleScope.of(context).toggleLanguage();
   }
 
   void onStartWorkPressed(BuildContext context) {
