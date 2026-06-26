@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:test_payment_app/core/di/injection.dart';
 import 'package:test_payment_app/core/presentation/bloc/app_bloc.dart';
@@ -10,9 +11,12 @@ import 'package:test_payment_app/features/onboarding/presentation/screens/onboar
 import 'package:test_payment_app/features/subscription/presentation/screens/subscription_screen.dart';
 import 'package:test_payment_app/features/subscription/subscription_routes.dart';
 
+final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
+
 final _appRouterRefreshNotifier = AppRouterRefreshNotifier(getIt<AppBloc>());
 
 final GoRouter appRouter = GoRouter(
+  navigatorKey: rootNavigatorKey,
   initialLocation: OnboardingRoutes.root,
   refreshListenable: _appRouterRefreshNotifier,
   redirect: (context, state) {

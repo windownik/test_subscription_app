@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:test_payment_app/core/di/injection.dart';
+import 'package:test_payment_app/core/extensions/build_context_bottom_toast_extension.dart';
 import 'package:test_payment_app/core/locale/app_language.dart';
+import 'package:test_payment_app/core/locale/app_language_localization_extension.dart';
 import 'package:test_payment_app/core/locale/app_locale_scope.dart';
 import 'package:test_payment_app/core/presentation/bloc/app_bloc.dart';
 import 'package:test_payment_app/core/presentation/bloc/app_event.dart';
@@ -52,5 +54,15 @@ class _AppState extends State<App> {
 
   void onLanguageChanged(AppLanguage language) {
     setState(() => _language = language);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final context = rootNavigatorKey.currentContext;
+      if (context == null) {
+        return;
+      }
+
+      final l10n = AppLocalizations.of(context)!;
+      context.showBottomToast(language.languageChangedMessage(l10n));
+    });
   }
 }

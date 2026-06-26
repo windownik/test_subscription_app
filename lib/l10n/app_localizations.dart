@@ -169,6 +169,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'RU'**
   String get languageRuSymbol;
+
+  /// No description provided for @languageChangedToRussian.
+  ///
+  /// In en, this message translates to:
+  /// **'Language changed to Russian'**
+  String get languageChangedToRussian;
+
+  /// No description provided for @languageChangedToEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'Language changed to English'**
+  String get languageChangedToEnglish;
 }
 
 class _AppLocalizationsDelegate

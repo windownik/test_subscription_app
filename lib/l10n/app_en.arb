@@ -18,5 +18,7 @@
     }
   },
   "languageEnSymbol": "EN",
-  "languageRuSymbol": "RU"
+  "languageRuSymbol": "RU",
+  "languageChangedToRussian": "Language changed to Russian",
+  "languageChangedToEnglish": "Language changed to English"
 }

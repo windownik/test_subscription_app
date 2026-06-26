@@ -45,4 +45,10 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get languageRuSymbol => 'RU';
+
+  @override
+  String get languageChangedToRussian => 'Язык сменен на русский';
+
+  @override
+  String get languageChangedToEnglish => 'Язык сменен на английский';
 }

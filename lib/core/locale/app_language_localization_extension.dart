@@ -8,4 +8,11 @@ extension AppLanguageLocalization on AppLanguage {
       AppLanguage.ru => l10n.languageRuSymbol,
     };
   }
+
+  String languageChangedMessage(AppLocalizations l10n) {
+    return switch (this) {
+      AppLanguage.ru => l10n.languageChangedToRussian,
+      AppLanguage.en => l10n.languageChangedToEnglish,
+    };
+  }
 }
