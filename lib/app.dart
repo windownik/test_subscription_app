@@ -8,6 +8,7 @@ import 'package:test_payment_app/core/locale/app_language_localization_extension
 import 'package:test_payment_app/core/locale/app_locale_scope.dart';
 import 'package:test_payment_app/core/presentation/bloc/app_bloc.dart';
 import 'package:test_payment_app/core/presentation/bloc/app_event.dart';
+import 'package:test_payment_app/core/presentation/bloc/app_state.dart';
 import 'package:test_payment_app/core/router/app_router.dart';
 import 'package:test_payment_app/l10n/app_localizations.dart';
 
@@ -32,24 +33,40 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: _appBloc,
-      child: AppLocaleScope(
-        language: _language,
-        onLanguageChanged: onLanguageChanged,
-        child: CupertinoApp.router(
-          onGenerateTitle: (context) =>
-              AppLocalizations.of(context)!.welcomeToApp,
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: AppLocalizations.supportedLocales,
-          locale: _language.locale,
-          routerConfig: appRouter,
+      child: BlocListener<AppBloc, AppState>(
+        listenWhen: (previous, current) =>
+            current.navigationRoute != null &&
+            current.navigationRoute != previous.navigationRoute,
+        listener: onAppNavigation,
+        child: AppLocaleScope(
+          language: _language,
+          onLanguageChanged: onLanguageChanged,
+          child: CupertinoApp.router(
+            onGenerateTitle: (context) =>
+                AppLocalizations.of(context)!.welcomeToApp,
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: _language.locale,
+            routerConfig: appRouter,
+          ),
         ),
       ),
     );
+  }
+
+  void onAppNavigation(BuildContext context, AppState state) {
+    final route = state.navigationRoute;
+    if (route == null) {
+      return;
+    }
+
+    appRouter.go(route);
+    _appBloc.add(const AppNavigationHandled());
   }
 
   void onLanguageChanged(AppLanguage language) {

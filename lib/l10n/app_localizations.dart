@@ -98,6 +98,12 @@ abstract class AppLocalizations {
     Locale('ru'),
   ];
 
+  /// No description provided for @payApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay app'**
+  String get payApp;
+
   /// No description provided for @welcomeToApp.
   ///
   /// In en, this message translates to:

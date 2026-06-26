@@ -21,3 +21,7 @@ final class AppSubscriptionPlanSelected extends AppEvent {
 final class AppReloadPressed extends AppEvent {
   const AppReloadPressed();
 }
+
+final class AppNavigationHandled extends AppEvent {
+  const AppNavigationHandled();
+}

@@ -1,15 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:test_payment_app/core/extensions/build_context_bottom_toast_extension.dart';
 import 'package:test_payment_app/core/locale/app_language_localization_extension.dart';
 import 'package:test_payment_app/core/locale/app_locale_scope.dart';
 import 'package:test_payment_app/core/presentation/bloc/app_bloc.dart';
 import 'package:test_payment_app/core/presentation/bloc/app_event.dart';
 import 'package:test_payment_app/core/presentation/bloc/app_state.dart';
-import 'package:test_payment_app/features/home/presentation/home_layout.dart';
 import 'package:test_payment_app/features/home/presentation/widgets/home_body.dart';
-import 'package:test_payment_app/features/onboarding/onboarding_routes.dart';
 import 'package:test_payment_app/features/subscription/presentation/extensions/subscription_plan_localization_extension.dart';
 import 'package:test_payment_app/l10n/app_localizations.dart';
 
@@ -43,14 +40,6 @@ class HomeScreen extends StatelessWidget {
 
     context.read<AppBloc>().add(const AppReloadPressed());
     context.showBottomToast(l10n.databaseFullyCleared);
-
-    await Future.delayed(HomeLayout.reloadNavigationDelay);
-
-    if (!context.mounted) {
-      return;
-    }
-
-    context.go(OnboardingRoutes.root);
   }
 
   void onLanguagePressed(BuildContext context) {

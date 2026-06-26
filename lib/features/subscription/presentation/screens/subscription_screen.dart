@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:test_payment_app/core/di/injection.dart';
 import 'package:test_payment_app/core/error/failure.dart';
 import 'package:test_payment_app/core/presentation/bloc/app_bloc.dart';
 import 'package:test_payment_app/core/presentation/bloc/app_event.dart';
-import 'package:test_payment_app/features/home/home_routes.dart';
 import 'package:test_payment_app/features/payment/domain/repositories/payment_repository.dart';
 import 'package:test_payment_app/features/subscription/domain/entities/subscription_plan.dart';
 import 'package:test_payment_app/features/subscription/presentation/widgets/subscription_body.dart';
@@ -78,7 +76,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   void completeSubscription(BuildContext context, SubscriptionPlan plan) {
     context.read<AppBloc>().add(const AppOnboardingCompleted());
     context.read<AppBloc>().add(AppSubscriptionPlanSelected(plan));
-    context.go(HomeRoutes.main);
   }
 
   void showPaymentFailureDialog(BuildContext context, Failure failure) {

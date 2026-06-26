@@ -1,5 +1,6 @@
 {
   "@@locale": "ru",
+  "payApp": "Pay app",
   "welcomeToApp": "Добро пожаловать",
   "startWork": "Начать работу",
   "noSubscription": "У вас нет подписки, выберите план",

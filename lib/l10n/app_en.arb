@@ -1,5 +1,6 @@
 {
   "@@locale": "en",
+  "payApp": "Pay app",
   "welcomeToApp": "Welcome to app",
   "startWork": "Start work",
   "noSubscription": "You don't have a subscription, choose a plan",
