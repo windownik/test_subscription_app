@@ -15,9 +15,13 @@ class OnboardingWelcomeScreen extends StatelessWidget {
       child: SafeArea(
         child: OnboardingWelcomeBody(
           welcomeText: l10n.welcomeToApp,
-          onContinue: () => context.push(OnboardingRoutes.start),
+          onContinue: () => onContinuePressed(context),
         ),
       ),
     );
+  }
+
+  void onContinuePressed(BuildContext context) {
+    context.push(OnboardingRoutes.start);
   }
 }

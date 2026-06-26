@@ -17,10 +17,18 @@ class SubscriptionScreen extends StatelessWidget {
           noSubscriptionText: l10n.noSubscription,
           monthlyPlanLabel: l10n.monthlyPlan,
           yearlyPlanLabel: l10n.yearlyPlan,
-          onMonthlyPlanPressed: () => context.go(HomeRoutes.main),
-          onYearlyPlanPressed: () => context.go(HomeRoutes.main),
+          onMonthlyPlanPressed: () => onMonthlyPlanPressed(context),
+          onYearlyPlanPressed: () => onYearlyPlanPressed(context),
         ),
       ),
     );
+  }
+
+  void onMonthlyPlanPressed(BuildContext context) {
+    context.go(HomeRoutes.main);
+  }
+
+  void onYearlyPlanPressed(BuildContext context) {
+    context.go(HomeRoutes.main);
   }
 }

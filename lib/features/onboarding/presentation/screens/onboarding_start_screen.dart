@@ -15,9 +15,13 @@ class OnboardingStartScreen extends StatelessWidget {
       child: SafeArea(
         child: OnboardingStartBody(
           startWorkLabel: l10n.startWork,
-          onStartWorkPressed: () => context.push(SubscriptionRoutes.plans),
+          onStartWorkPressed: () => onStartWorkPressed(context),
         ),
       ),
     );
+  }
+
+  void onStartWorkPressed(BuildContext context) {
+    context.push(SubscriptionRoutes.plans);
   }
 }
