@@ -20,7 +20,6 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  AppLanguage _language = AppLanguage.ru;
   late final AppBloc _appBloc;
 
   @override
@@ -33,28 +32,40 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: _appBloc,
-      child: BlocListener<AppBloc, AppState>(
+      child: BlocConsumer<AppBloc, AppState>(
         listenWhen: (previous, current) =>
             current.navigationRoute != null &&
             current.navigationRoute != previous.navigationRoute,
         listener: onAppNavigation,
-        child: AppLocaleScope(
-          language: _language,
-          onLanguageChanged: onLanguageChanged,
-          child: CupertinoApp.router(
-            onGenerateTitle: (context) =>
-                AppLocalizations.of(context)!.welcomeToApp,
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: AppLocalizations.supportedLocales,
-            locale: _language.locale,
-            routerConfig: appRouter,
-          ),
-        ),
+        buildWhen: (previous, current) =>
+            previous.runtimeType != current.runtimeType ||
+            (previous is AppStateLoaded &&
+                current is AppStateLoaded &&
+                previous.language != current.language),
+        builder: (context, state) {
+          final language = switch (state) {
+            AppStateLoaded(:final language) => language,
+            _ => AppLanguage.ru,
+          };
+
+          return AppLocaleScope(
+            language: language,
+            onLanguageChanged: onLanguageChanged,
+            child: CupertinoApp.router(
+              onGenerateTitle: (context) =>
+                  AppLocalizations.of(context)!.welcomeToApp,
+              localizationsDelegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: language.locale,
+              routerConfig: appRouter,
+            ),
+          );
+        },
       ),
     );
   }
@@ -70,7 +81,7 @@ class _AppState extends State<App> {
   }
 
   void onLanguageChanged(AppLanguage language) {
-    setState(() => _language = language);
+    _appBloc.add(AppLanguageChanged(language));
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final context = rootNavigatorKey.currentContext;

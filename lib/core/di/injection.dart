@@ -1,4 +1,6 @@
 import 'package:get_it/get_it.dart';
+import 'package:test_payment_app/core/locale/data/repositories/language_repository_impl.dart';
+import 'package:test_payment_app/core/locale/domain/repositories/language_repository.dart';
 import 'package:test_payment_app/core/presentation/bloc/app_bloc.dart';
 import 'package:test_payment_app/core/secure_storage/data/datasources/secure_storage_local_data_source.dart';
 import 'package:test_payment_app/core/secure_storage/data/datasources/secure_storage_local_data_source_impl.dart';
@@ -30,6 +32,10 @@ Future<void> configureDependencies() async {
     () => SubscriptionPlanRepositoryImpl(getIt<SecureStorageRepository>()),
   );
 
+  getIt.registerLazySingleton<LanguageRepository>(
+    () => LanguageRepositoryImpl(getIt<SecureStorageRepository>()),
+  );
+
   getIt.registerLazySingleton<PaymentRepository>(
     () => const PaymentRepositoryImpl(),
   );
@@ -38,6 +44,7 @@ Future<void> configureDependencies() async {
     () => AppBloc(
       onboardingRepository: getIt<OnboardingRepository>(),
       subscriptionPlanRepository: getIt<SubscriptionPlanRepository>(),
+      languageRepository: getIt<LanguageRepository>(),
     ),
   );
 }

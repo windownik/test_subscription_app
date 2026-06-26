@@ -11,8 +11,18 @@ enum AppLanguage {
         AppLanguage.ru => AppLanguage.en,
       };
 
+  String get storageValue => name;
+
   static AppLanguage fromLocale(Locale locale) {
     return switch (locale.languageCode) {
+      'en' => AppLanguage.en,
+      'ru' => AppLanguage.ru,
+      _ => AppLanguage.ru,
+    };
+  }
+
+  static AppLanguage fromStorageValue(String? value) {
+    return switch (value) {
       'en' => AppLanguage.en,
       'ru' => AppLanguage.ru,
       _ => AppLanguage.ru,

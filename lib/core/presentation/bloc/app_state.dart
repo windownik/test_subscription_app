@@ -1,3 +1,4 @@
+import 'package:test_payment_app/core/locale/app_language.dart';
 import 'package:test_payment_app/features/subscription/domain/entities/subscription_plan.dart';
 
 sealed class AppState {
@@ -15,12 +16,14 @@ final class AppStateLoaded extends AppState {
     required this.onboardingCompleted,
     required this.selectedPlan,
     required this.shouldShowHome,
+    required this.language,
     this.navigationRoute,
   });
 
   final bool onboardingCompleted;
   final SubscriptionPlan? selectedPlan;
   final bool shouldShowHome;
+  final AppLanguage language;
   @override
   final String? navigationRoute;
 
@@ -28,6 +31,7 @@ final class AppStateLoaded extends AppState {
     bool? onboardingCompleted,
     SubscriptionPlan? selectedPlan,
     bool? shouldShowHome,
+    AppLanguage? language,
     String? navigationRoute,
     bool clearNavigationRoute = false,
   }) {
@@ -37,6 +41,7 @@ final class AppStateLoaded extends AppState {
       onboardingCompleted: onboardingCompleted ?? this.onboardingCompleted,
       selectedPlan: resolvedPlan,
       shouldShowHome: shouldShowHome ?? (resolvedPlan != null),
+      language: language ?? this.language,
       navigationRoute: clearNavigationRoute
           ? null
           : (navigationRoute ?? this.navigationRoute),
