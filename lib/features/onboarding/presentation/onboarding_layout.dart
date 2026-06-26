@@ -7,5 +7,6 @@ abstract final class OnboardingLayout {
   static const double indicatorInactiveAlpha = 0.3;
   static const Duration indicatorColorAnimationDuration =
       Duration(milliseconds: 300);
+  static const Duration pageTransitionDuration = Duration(milliseconds: 300);
   static const int onboardingPageCount = 2;
 }
