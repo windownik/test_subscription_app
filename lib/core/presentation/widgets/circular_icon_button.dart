@@ -1,8 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:test_payment_app/core/extensions/cupertino_theme_colors_extension.dart';
-import 'package:test_payment_app/core/presentation/circular_icon_button_layout.dart';
 
 class CircularIconButton extends StatefulWidget {
+  static const double defaultSize = 56;
+  static const double defaultPadding = 16;
+  static const double shadowBlurRadius = 8;
+  static const double shadowOffsetY = 2;
+  static const double pressedScale = 0.95;
+  static const Duration pressAnimationDuration = Duration(milliseconds: 150);
+
   final Widget child;
   final double size;
   final double padding;
@@ -11,9 +17,9 @@ class CircularIconButton extends StatefulWidget {
   const CircularIconButton({
     super.key,
     required this.child,
-    required this.size,
-    required this.padding,
     required this.onTap,
+    this.size = defaultSize,
+    this.padding = defaultPadding,
   });
 
   @override
@@ -25,9 +31,8 @@ class _CircularIconButtonState extends State<CircularIconButton> {
 
   @override
   Widget build(BuildContext context) {
-    final scale = _isPressed
-        ? CircularIconButtonLayout.pressedScale
-        : 1.0;
+    final scale =
+        _isPressed ? CircularIconButton.pressedScale : 1.0;
 
     return GestureDetector(
       onTap: widget.onTap,
@@ -35,7 +40,7 @@ class _CircularIconButtonState extends State<CircularIconButton> {
       onTapUp: (_) => onTapUp(),
       onTapCancel: onTapCancel,
       child: AnimatedContainer(
-        duration: CircularIconButtonLayout.pressAnimationDuration,
+        duration: CircularIconButton.pressAnimationDuration,
         curve: Curves.easeInOut,
         width: widget.size * scale,
         height: widget.size * scale,
@@ -45,10 +50,10 @@ class _CircularIconButtonState extends State<CircularIconButton> {
           boxShadow: [
             BoxShadow(
               color: context.circularIconButtonShadow,
-              blurRadius: CircularIconButtonLayout.shadowBlurRadius,
+              blurRadius: CircularIconButton.shadowBlurRadius,
               offset: const Offset(
                 0,
-                CircularIconButtonLayout.shadowOffsetY,
+                CircularIconButton.shadowOffsetY,
               ),
             ),
           ],
