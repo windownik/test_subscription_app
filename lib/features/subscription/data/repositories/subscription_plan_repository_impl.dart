@@ -24,4 +24,11 @@ class SubscriptionPlanRepositoryImpl implements SubscriptionPlanRepository {
       value: plan.storageValue,
     );
   }
+
+  @override
+  Future<Either<Failure, void>> clearSelectedPlan() {
+    return _secureStorageRepository.delete(
+      key: SecureStorageKeys.subscriptionPlan,
+    );
+  }
 }

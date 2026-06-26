@@ -6,4 +6,6 @@ abstract interface class SubscriptionPlanRepository {
   Stream<SubscriptionPlan?> watchSelectedPlan();
 
   Future<Either<Failure, void>> selectPlan(SubscriptionPlan plan);
+
+  Future<Either<Failure, void>> clearSelectedPlan();
 }

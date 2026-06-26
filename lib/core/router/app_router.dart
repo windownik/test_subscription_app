@@ -17,15 +17,23 @@ final GoRouter appRouter = GoRouter(
   refreshListenable: _appRouterRefreshNotifier,
   redirect: (context, state) {
     final appState = getIt<AppBloc>().state;
-    if (appState is! AppStateLoaded || !appState.shouldShowHome) {
+    if (appState is! AppStateLoaded) {
       return null;
+    }
+
+    if (appState.shouldShowHome) {
+      if (state.matchedLocation == HomeRoutes.main) {
+        return null;
+      }
+
+      return HomeRoutes.main;
     }
 
     if (state.matchedLocation == HomeRoutes.main) {
-      return null;
+      return OnboardingRoutes.root;
     }
 
-    return HomeRoutes.main;
+    return null;
   },
   routes: [
     GoRoute(

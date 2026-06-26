@@ -7,4 +7,6 @@ abstract interface class OnboardingRepository {
   Future<Either<Failure, void>> setOnboardingCompleted({
     required bool completed,
   });
+
+  Future<Either<Failure, void>> clearOnboardingData();
 }

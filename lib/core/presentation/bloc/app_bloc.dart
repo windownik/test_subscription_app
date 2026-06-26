@@ -13,6 +13,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     on<AppStarted>(_onStarted);
     on<AppOnboardingCompleted>(_onOnboardingCompleted);
     on<AppSubscriptionPlanSelected>(_onSubscriptionPlanSelected);
+    on<AppReloadPressed>(_onReloadPressed);
   }
 
   final OnboardingRepository _onboardingRepository;
@@ -70,5 +71,20 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     final result = await _subscriptionPlanRepository.selectPlan(event.plan);
 
     result.fold((_) => emit(const AppStateFailure()), (_) {});
+  }
+
+  Future<void> _onReloadPressed(
+    AppReloadPressed event,
+    Emitter<AppState> emit,
+  ) async {
+    final results = await Future.wait([
+      _onboardingRepository.clearOnboardingData(),
+      _subscriptionPlanRepository.clearSelectedPlan(),
+    ]);
+
+    final hasFailure = results.any((result) => result.isLeft());
+    if (hasFailure) {
+      emit(const AppStateFailure());
+    }
   }
 }

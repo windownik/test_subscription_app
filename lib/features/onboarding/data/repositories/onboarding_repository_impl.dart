@@ -28,4 +28,11 @@ class OnboardingRepositoryImpl implements OnboardingRepository {
       value: completed ? _completedValue : _notCompletedValue,
     );
   }
+
+  @override
+  Future<Either<Failure, void>> clearOnboardingData() {
+    return _secureStorageRepository.delete(
+      key: SecureStorageKeys.onboardingCompleted,
+    );
+  }
 }

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_payment_app/core/locale/app_language_localization_extension.dart';
 import 'package:test_payment_app/core/locale/app_locale_scope.dart';
 import 'package:test_payment_app/core/presentation/bloc/app_bloc.dart';
+import 'package:test_payment_app/core/presentation/bloc/app_event.dart';
 import 'package:test_payment_app/core/presentation/bloc/app_state.dart';
 import 'package:test_payment_app/features/home/presentation/widgets/home_body.dart';
 import 'package:test_payment_app/features/subscription/presentation/extensions/subscription_plan_localization_extension.dart';
@@ -24,7 +25,7 @@ class HomeScreen extends StatelessWidget {
               mainScreenText: l10n.mainScreen,
               selectedPlanText: resolveSelectedPlanText(l10n, state),
               languageSymbol: language.symbol(l10n),
-              onReloadPressed: onReloadPressed,
+              onReloadPressed: () => onReloadPressed(context),
               onLanguagePressed: () => onLanguagePressed(context),
             ),
           ),
@@ -33,7 +34,9 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  void onReloadPressed() {}
+  void onReloadPressed(BuildContext context) {
+    context.read<AppBloc>().add(const AppReloadPressed());
+  }
 
   void onLanguagePressed(BuildContext context) {
     AppLocaleScope.of(context).toggleLanguage();
