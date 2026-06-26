@@ -56,6 +56,15 @@
 - Размещай extensions в `lib/core/extensions/` (общие) или `lib/features/<feature>/presentation/extensions/` (специфичные для фичи).
 - ЗАПРЕЩЕНО: эмулировать extension через `abstract final class` со `static` методами, если методам нужны параметры или доступ к `this`.
 
+### 10. Обработчики событий (Callbacks / Actions)
+- В **Smart-компонентах (Screens)** любая логика по действию пользователя (навигация, dispatch в BLoC, диалоги) выносится из `build()` в именованные методы.
+- Методы обработчиков размещаются **сразу после `build()`**, до остальных private-методов.
+- Именование: глагол + смысл действия (`onContinuePressed`, `onMonthlyPlanPressed`, `onStartWorkPressed`).
+- В `build()` в колбэки передаётся только ссылка на метод, без inline-логики.
+- ЗАПРЕЩЕНО: писать навигацию и бизнес-логику прямо в `onPressed: () => ...` / `onTap: () => ...` внутри `build()`.
+- **Dumb-виджеты (Widgets):** по-прежнему только принимают `VoidCallback` / `ValueChanged<T>` через конструктор — свои обработчики в body не создают.
+- Для `StatelessWidget` метод принимает `BuildContext` как параметр. Для `StatefulWidget` допустима сигнатура без параметров (`void onTap() {}`), если `context` доступен из `State`.
+
 ---
 
 ### Примеры кода для подражания:
@@ -102,6 +111,34 @@ abstract final class PaymentNavigation {
     context.push('${PaymentRoutes.details}/$id');
   }
 }
+```
+
+#### Обработчики событий: методы после build
+```dart
+class OnboardingWelcomeScreen extends StatelessWidget {
+  const OnboardingWelcomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    return CupertinoPageScaffold(
+      child: SafeArea(
+        child: OnboardingWelcomeBody(
+          welcomeText: l10n.welcomeToApp,
+          onContinue: () => onContinuePressed(context),
+        ),
+      ),
+    );
+  }
+
+  void onContinuePressed(BuildContext context) {
+    context.push(OnboardingRoutes.start);
+  }
+}
+
+// ❌ НЕПРАВИЛЬНО:
+// onContinue: () => context.push(OnboardingRoutes.start),
 ```
 
 #### Реактивная цепочка: БД → Repository → BLoC
