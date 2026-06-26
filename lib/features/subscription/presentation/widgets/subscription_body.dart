@@ -1,16 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:test_payment_app/features/subscription/presentation/subscription_layout.dart';
+import 'package:test_payment_app/features/subscription/presentation/widgets/subscription_continue_button_stream.dart';
 import 'package:test_payment_app/features/subscription/presentation/widgets/subscription_plan_checkbox_row.dart';
 
 class SubscriptionBody extends StatelessWidget {
   final String noSubscriptionText;
   final String monthlyPlanLabel;
   final String yearlyPlanLabel;
-  final String continueLabel;
   final bool isMonthlySelected;
   final bool isYearlySelected;
-  final bool isContinueEnabled;
-  final bool isPurchasing;
   final VoidCallback onMonthlyPlanPressed;
   final VoidCallback onYearlyPlanPressed;
   final VoidCallback onContinuePressed;
@@ -20,11 +18,8 @@ class SubscriptionBody extends StatelessWidget {
     required this.noSubscriptionText,
     required this.monthlyPlanLabel,
     required this.yearlyPlanLabel,
-    required this.continueLabel,
     required this.isMonthlySelected,
     required this.isYearlySelected,
-    required this.isContinueEnabled,
-    required this.isPurchasing,
     required this.onMonthlyPlanPressed,
     required this.onYearlyPlanPressed,
     required this.onContinuePressed,
@@ -65,13 +60,9 @@ class SubscriptionBody extends StatelessWidget {
             ),
           ),
           const SizedBox(height: SubscriptionLayout.continueButtonTopSpacing),
-          if (isPurchasing)
-            const Center(child: CupertinoActivityIndicator())
-          else
-            CupertinoButton.filled(
-              onPressed: isContinueEnabled ? onContinuePressed : null,
-              child: Text(continueLabel),
-            ),
+          SubscriptionContinueButtonStream(
+            onPressed: onContinuePressed,
+          ),
         ],
       ),
     );

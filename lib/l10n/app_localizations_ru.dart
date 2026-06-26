@@ -30,6 +30,18 @@ class AppLocalizationsRu extends AppLocalizations {
   String get continueButton => 'Продолжить';
 
   @override
+  String get paymentCreateOrder => 'Создаём заказ…';
+
+  @override
+  String get paymentCheckMoney => 'Проверяем оплату…';
+
+  @override
+  String get paymentSuccess => 'Оплата прошла успешно';
+
+  @override
+  String get paymentError => 'Ошибка оплаты';
+
+  @override
   String get paymentFailed => 'Не удалось выполнить оплату';
 
   @override

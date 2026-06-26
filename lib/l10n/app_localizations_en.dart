@@ -30,6 +30,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get continueButton => 'Continue';
 
   @override
+  String get paymentCreateOrder => 'Creating order…';
+
+  @override
+  String get paymentCheckMoney => 'Checking payment…';
+
+  @override
+  String get paymentSuccess => 'Payment successful';
+
+  @override
+  String get paymentError => 'Payment failed';
+
+  @override
   String get paymentFailed => 'Payment failed';
 
   @override

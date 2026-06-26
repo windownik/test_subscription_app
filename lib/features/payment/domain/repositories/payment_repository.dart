@@ -1,7 +1,6 @@
-import 'package:fpdart/fpdart.dart';
-import 'package:test_payment_app/core/error/failure.dart';
+import 'package:test_payment_app/features/payment/domain/entities/payment_process_status.dart';
 import 'package:test_payment_app/features/subscription/domain/entities/subscription_plan.dart';
 
 abstract interface class PaymentRepository {
-  Future<Either<Failure, void>> purchasePlan(SubscriptionPlan plan);
+  Stream<PaymentProcessStatus> purchasePlan(SubscriptionPlan plan);
 }

@@ -1,102 +1,130 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_payment_app/core/di/injection.dart';
-import 'package:test_payment_app/core/error/failure.dart';
 import 'package:test_payment_app/core/presentation/bloc/app_bloc.dart';
 import 'package:test_payment_app/core/presentation/bloc/app_event.dart';
-import 'package:test_payment_app/features/payment/domain/repositories/payment_repository.dart';
+import 'package:test_payment_app/features/payment/domain/entities/payment_process_status.dart';
 import 'package:test_payment_app/features/subscription/domain/entities/subscription_plan.dart';
+import 'package:test_payment_app/features/subscription/presentation/bloc/subscription_bloc.dart';
+import 'package:test_payment_app/features/subscription/presentation/bloc/subscription_event.dart';
+import 'package:test_payment_app/features/subscription/presentation/bloc/subscription_state.dart';
+import 'package:test_payment_app/features/subscription/presentation/subscription_layout.dart';
 import 'package:test_payment_app/features/subscription/presentation/widgets/subscription_body.dart';
 import 'package:test_payment_app/l10n/app_localizations.dart';
 
-class SubscriptionScreen extends StatefulWidget {
+class SubscriptionScreen extends StatelessWidget {
   const SubscriptionScreen({super.key});
-
-  @override
-  State<SubscriptionScreen> createState() => _SubscriptionScreenState();
-}
-
-class _SubscriptionScreenState extends State<SubscriptionScreen> {
-  SubscriptionPlan? _selectedPlan;
-  bool _isPurchasing = false;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return CupertinoPageScaffold(
-      child: SafeArea(
-        child: SubscriptionBody(
-          noSubscriptionText: l10n.noSubscription,
-          monthlyPlanLabel: l10n.monthlyPlan,
-          yearlyPlanLabel: l10n.yearlyPlan,
-          continueLabel: l10n.continueButton,
-          isMonthlySelected: _selectedPlan == SubscriptionPlan.monthly,
-          isYearlySelected: _selectedPlan == SubscriptionPlan.yearly,
-          isContinueEnabled: _selectedPlan != null && !_isPurchasing,
-          isPurchasing: _isPurchasing,
-          onMonthlyPlanPressed: onMonthlyPlanPressed,
-          onYearlyPlanPressed: onYearlyPlanPressed,
-          onContinuePressed: () => onContinuePressed(context),
+    return BlocListener<SubscriptionBloc, SubscriptionState>(
+      listenWhen: (previous, current) =>
+          previous.paymentProcessStatus != current.paymentProcessStatus,
+      listener: onSubscriptionStateChanged,
+      child: CupertinoPageScaffold(
+        child: SafeArea(
+          child: BlocBuilder<SubscriptionBloc, SubscriptionState>(
+            buildWhen: (previous, current) =>
+                previous.selectedPlan != current.selectedPlan,
+            builder: (context, state) {
+              return SubscriptionBody(
+                noSubscriptionText: l10n.noSubscription,
+                monthlyPlanLabel: l10n.monthlyPlan,
+                yearlyPlanLabel: l10n.yearlyPlan,
+                isMonthlySelected:
+                    state.selectedPlan == SubscriptionPlan.monthly,
+                isYearlySelected:
+                    state.selectedPlan == SubscriptionPlan.yearly,
+                onMonthlyPlanPressed: () => onMonthlyPlanPressed(context),
+                onYearlyPlanPressed: () => onYearlyPlanPressed(context),
+                onContinuePressed: () => onContinuePressed(context),
+              );
+            },
+          ),
         ),
       ),
     );
   }
 
-  void onMonthlyPlanPressed() {
-    setState(() => _selectedPlan = SubscriptionPlan.monthly);
+  void onSubscriptionStateChanged(
+    BuildContext context,
+    SubscriptionState state,
+  ) {
+    switch (state.paymentProcessStatus) {
+      case PaymentProcessStatus.success:
+        unawaited(onPaymentSucceeded(context, state));
+      case PaymentProcessStatus.error:
+        showPaymentFailureDialog(context);
+      case PaymentProcessStatus.noPaymentProcess:
+      case PaymentProcessStatus.createOrder:
+      case PaymentProcessStatus.checkMoney:
+        return;
+    }
   }
 
-  void onYearlyPlanPressed() {
-    setState(() => _selectedPlan = SubscriptionPlan.yearly);
-  }
+  Future<void> onPaymentSucceeded(
+    BuildContext context,
+    SubscriptionState state,
+  ) async {
+    await Future<void>.delayed(SubscriptionLayout.successNavigationDelay);
 
-  Future<void> onContinuePressed(BuildContext context) async {
-    final plan = _selectedPlan;
-    if (plan == null || _isPurchasing) {
+    if (!context.mounted) {
       return;
     }
 
-    setState(() => _isPurchasing = true);
-
-    final result = await getIt<PaymentRepository>().purchasePlan(plan);
-
-    if (!mounted) {
+    final plan = state.selectedPlan;
+    if (plan == null) {
       return;
     }
 
-    setState(() => _isPurchasing = false);
+    completeSubscription(context, plan);
+  }
 
-    result.fold(
-      (failure) => showPaymentFailureDialog(context, failure),
-      (_) => completeSubscription(context, plan),
-    );
+  void onMonthlyPlanPressed(BuildContext context) {
+    context
+        .read<SubscriptionBloc>()
+        .add(const SubscriptionMonthlyPlanSelected());
+  }
+
+  void onYearlyPlanPressed(BuildContext context) {
+    context.read<SubscriptionBloc>().add(const SubscriptionYearlyPlanSelected());
+  }
+
+  void onContinuePressed(BuildContext context) {
+    context.read<SubscriptionBloc>().add(const SubscriptionPurchaseStarted());
   }
 
   void completeSubscription(BuildContext context, SubscriptionPlan plan) {
     context.read<AppBloc>().add(AppSubscriptionPlanSelected(plan));
   }
 
-  void showPaymentFailureDialog(BuildContext context, Failure failure) {
+  void showPaymentFailureDialog(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final message = switch (failure) {
-      PaymentFailure(:final message) => message,
-      _ => l10n.paymentFailed,
-    };
 
     showCupertinoDialog<void>(
       context: context,
       builder: (dialogContext) => CupertinoAlertDialog(
         title: Text(l10n.paymentFailed),
-        content: Text(message),
+        content: Text(l10n.paymentFailed),
         actions: [
           CupertinoDialogAction(
             isDefaultAction: true,
-            onPressed: () => Navigator.of(dialogContext).pop(),
+            onPressed: () => onPaymentFailureDialogClosed(context, dialogContext),
             child: Text(l10n.ok),
           ),
         ],
       ),
     );
+  }
+
+  void onPaymentFailureDialogClosed(
+    BuildContext context,
+    BuildContext dialogContext,
+  ) {
+    Navigator.of(dialogContext).pop();
+    context.read<SubscriptionBloc>().add(const SubscriptionPaymentStatusReset());
   }
 }

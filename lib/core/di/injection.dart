@@ -10,6 +10,7 @@ import 'package:test_payment_app/features/payment/data/repositories/payment_repo
 import 'package:test_payment_app/features/payment/domain/repositories/payment_repository.dart';
 import 'package:test_payment_app/features/subscription/data/repositories/subscription_plan_repository_impl.dart';
 import 'package:test_payment_app/features/subscription/domain/repositories/subscription_plan_repository.dart';
+import 'package:test_payment_app/features/subscription/presentation/bloc/subscription_bloc.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -32,6 +33,12 @@ Future<void> configureDependencies() async {
 
   getIt.registerLazySingleton<PaymentRepository>(
     () => const PaymentRepositoryImpl(),
+  );
+
+  getIt.registerFactory<SubscriptionBloc>(
+    () => SubscriptionBloc(
+      paymentRepository: getIt<PaymentRepository>(),
+    ),
   );
 
   getIt.registerLazySingleton<AppBloc>(

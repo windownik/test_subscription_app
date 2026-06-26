@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:test_payment_app/core/di/injection.dart';
 import 'package:test_payment_app/core/presentation/screens/loading_screen.dart';
 import 'package:test_payment_app/core/router/loading_routes.dart';
 import 'package:test_payment_app/features/home/home_routes.dart';
 import 'package:test_payment_app/features/home/presentation/screens/home_screen.dart';
 import 'package:test_payment_app/features/onboarding/onboarding_routes.dart';
 import 'package:test_payment_app/features/onboarding/presentation/screens/onboarding_screen.dart';
+import 'package:test_payment_app/features/subscription/presentation/bloc/subscription_bloc.dart';
 import 'package:test_payment_app/features/subscription/presentation/screens/subscription_screen.dart';
 import 'package:test_payment_app/features/subscription/subscription_routes.dart';
 
@@ -25,7 +28,10 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(
       path: SubscriptionRoutes.plans,
-      builder: (context, state) => const SubscriptionScreen(),
+      builder: (context, state) => BlocProvider(
+        create: (_) => getIt<SubscriptionBloc>(),
+        child: const SubscriptionScreen(),
+      ),
     ),
     GoRoute(
       path: HomeRoutes.main,

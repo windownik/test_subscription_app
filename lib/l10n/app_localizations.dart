@@ -140,6 +140,30 @@ abstract class AppLocalizations {
   /// **'Continue'**
   String get continueButton;
 
+  /// No description provided for @paymentCreateOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Creating order…'**
+  String get paymentCreateOrder;
+
+  /// No description provided for @paymentCheckMoney.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking payment…'**
+  String get paymentCheckMoney;
+
+  /// No description provided for @paymentSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment successful'**
+  String get paymentSuccess;
+
+  /// No description provided for @paymentError.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment failed'**
+  String get paymentError;
+
   /// No description provided for @paymentFailed.
   ///
   /// In en, this message translates to:
