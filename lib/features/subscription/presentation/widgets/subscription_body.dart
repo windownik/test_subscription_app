@@ -1,20 +1,33 @@
 import 'package:flutter/cupertino.dart';
 import 'package:test_payment_app/features/subscription/presentation/subscription_layout.dart';
+import 'package:test_payment_app/features/subscription/presentation/widgets/subscription_plan_checkbox_row.dart';
 
 class SubscriptionBody extends StatelessWidget {
   final String noSubscriptionText;
   final String monthlyPlanLabel;
   final String yearlyPlanLabel;
+  final String continueLabel;
+  final bool isMonthlySelected;
+  final bool isYearlySelected;
+  final bool isContinueEnabled;
+  final bool isPurchasing;
   final VoidCallback onMonthlyPlanPressed;
   final VoidCallback onYearlyPlanPressed;
+  final VoidCallback onContinuePressed;
 
   const SubscriptionBody({
     super.key,
     required this.noSubscriptionText,
     required this.monthlyPlanLabel,
     required this.yearlyPlanLabel,
+    required this.continueLabel,
+    required this.isMonthlySelected,
+    required this.isYearlySelected,
+    required this.isContinueEnabled,
+    required this.isPurchasing,
     required this.onMonthlyPlanPressed,
     required this.onYearlyPlanPressed,
+    required this.onContinuePressed,
   });
 
   @override
@@ -24,24 +37,41 @@ class SubscriptionBody extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(SubscriptionLayout.screenPadding),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            noSubscriptionText,
-            style: textStyle,
-            textAlign: TextAlign.center,
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  noSubscriptionText,
+                  style: textStyle,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: SubscriptionLayout.contentSpacing),
+                SubscriptionPlanCheckboxRow(
+                  label: monthlyPlanLabel,
+                  isSelected: isMonthlySelected,
+                  onPressed: onMonthlyPlanPressed,
+                ),
+                const SizedBox(height: SubscriptionLayout.planCheckboxSpacing),
+                SubscriptionPlanCheckboxRow(
+                  label: yearlyPlanLabel,
+                  isSelected: isYearlySelected,
+                  onPressed: onYearlyPlanPressed,
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: SubscriptionLayout.contentSpacing),
-          CupertinoButton.filled(
-            onPressed: onMonthlyPlanPressed,
-            child: Text(monthlyPlanLabel),
-          ),
-          const SizedBox(height: SubscriptionLayout.planButtonSpacing),
-          CupertinoButton.filled(
-            onPressed: onYearlyPlanPressed,
-            child: Text(yearlyPlanLabel),
-          ),
+          const SizedBox(height: SubscriptionLayout.continueButtonTopSpacing),
+          if (isPurchasing)
+            const Center(child: CupertinoActivityIndicator())
+          else
+            CupertinoButton.filled(
+              onPressed: isContinueEnabled ? onContinuePressed : null,
+              child: Text(continueLabel),
+            ),
         ],
       ),
     );

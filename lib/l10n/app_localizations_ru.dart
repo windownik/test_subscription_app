@@ -18,10 +18,19 @@ class AppLocalizationsRu extends AppLocalizations {
   String get noSubscription => 'У вас нет подписки, выберите план';
 
   @override
-  String get monthlyPlan => 'Помесячная';
+  String get monthlyPlan => 'Помесячный';
 
   @override
-  String get yearlyPlan => 'Годовая';
+  String get yearlyPlan => 'Годовой';
+
+  @override
+  String get continueButton => 'Продолжить';
+
+  @override
+  String get paymentFailed => 'Не удалось выполнить оплату';
+
+  @override
+  String get ok => 'OK';
 
   @override
   String get mainScreen => 'Главный экран';

@@ -3,8 +3,11 @@
   "welcomeToApp": "Добро пожаловать",
   "startWork": "Начать работу",
   "noSubscription": "У вас нет подписки, выберите план",
-  "monthlyPlan": "Помесячная",
-  "yearlyPlan": "Годовая",
+  "monthlyPlan": "Помесячный",
+  "yearlyPlan": "Годовой",
+  "continueButton": "Продолжить",
+  "paymentFailed": "Не удалось выполнить оплату",
+  "ok": "OK",
   "mainScreen": "Главный экран",
   "selectedPlan": "Выбранный тарифный план: {planName}",
   "@selectedPlan": {

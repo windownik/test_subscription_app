@@ -5,6 +5,9 @@
   "noSubscription": "You don't have a subscription, choose a plan",
   "monthlyPlan": "Monthly",
   "yearlyPlan": "Yearly",
+  "continueButton": "Continue",
+  "paymentFailed": "Payment failed",
+  "ok": "OK",
   "mainScreen": "Main screen",
   "selectedPlan": "Selected plan: {planName}",
   "@selectedPlan": {

@@ -24,6 +24,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get yearlyPlan => 'Yearly';
 
   @override
+  String get continueButton => 'Continue';
+
+  @override
+  String get paymentFailed => 'Payment failed';
+
+  @override
+  String get ok => 'OK';
+
+  @override
   String get mainScreen => 'Main screen';
 
   @override
