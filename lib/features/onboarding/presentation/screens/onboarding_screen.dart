@@ -38,6 +38,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final l10n = AppLocalizations.of(context)!;
     final language = AppLocaleScope.of(context).language;
     final textStyle = CupertinoTheme.of(context).textTheme.textStyle;
+    final isLanguageButtonVisible =
+        _currentPageIndex == OnboardingLayout.welcomePageIndex;
 
     return CupertinoPageScaffold(
       child: Stack(
@@ -57,15 +59,36 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ],
           ),
           Positioned(
-            top: 50,
-            right: 10,
-            child: CircularIconButton(
-              size: OnboardingLayout.languageButtonSize,
-              padding: OnboardingLayout.languageButtonPadding,
-              onTap: () => onLanguagePressed(context),
-              child: Text(
-                language.symbol(l10n),
-                style: textStyle.copyWith(fontWeight: FontWeight.w600),
+            top: 0,
+            right: 0,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: OnboardingLayout.languageButtonTopPadding,
+                  right: OnboardingLayout.languageButtonTrailingPadding,
+                ),
+                child: IgnorePointer(
+                  ignoring: !isLanguageButtonVisible,
+                  child: AnimatedOpacity(
+                    opacity: isLanguageButtonVisible
+                        ? OnboardingLayout.languageButtonVisibleOpacity
+                        : OnboardingLayout.languageButtonHiddenOpacity,
+                    duration: OnboardingLayout.languageButtonOpacityDuration,
+                    curve: Curves.easeInOut,
+                    child: CircularIconButton(
+                      size: OnboardingLayout.languageButtonSize,
+                      padding: OnboardingLayout.languageButtonPadding,
+                      isActive: isLanguageButtonVisible,
+                      onTap: () => onLanguagePressed(context),
+                      child: Text(
+                        language.symbol(l10n),
+                        style: textStyle.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ),
           ),

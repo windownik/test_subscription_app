@@ -9,6 +9,11 @@ abstract final class OnboardingLayout {
       Duration(milliseconds: 300);
   static const Duration pageTransitionDuration = Duration(milliseconds: 300);
   static const int onboardingPageCount = 2;
+  static const int welcomePageIndex = 0;
+  static const double languageButtonVisibleOpacity = 1;
+  static const double languageButtonHiddenOpacity = 0;
+  static const Duration languageButtonOpacityDuration =
+      Duration(milliseconds: 300);
   static const double languageButtonSize = 44;
   static const double languageButtonPadding = 10;
   static const double languageButtonTopPadding = 8;
