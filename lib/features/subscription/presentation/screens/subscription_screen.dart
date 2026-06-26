@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:test_payment_app/core/presentation/bloc/app_bloc.dart';
+import 'package:test_payment_app/core/presentation/bloc/app_event.dart';
 import 'package:test_payment_app/features/home/home_routes.dart';
+import 'package:test_payment_app/features/subscription/domain/entities/subscription_plan.dart';
 import 'package:test_payment_app/features/subscription/presentation/widgets/subscription_body.dart';
 import 'package:test_payment_app/l10n/app_localizations.dart';
 
@@ -25,10 +29,18 @@ class SubscriptionScreen extends StatelessWidget {
   }
 
   void onMonthlyPlanPressed(BuildContext context) {
+    context.read<AppBloc>().add(const AppOnboardingCompleted());
+    context.read<AppBloc>().add(
+          const AppSubscriptionPlanSelected(SubscriptionPlan.monthly),
+        );
     context.go(HomeRoutes.main);
   }
 
   void onYearlyPlanPressed(BuildContext context) {
+    context.read<AppBloc>().add(const AppOnboardingCompleted());
+    context.read<AppBloc>().add(
+          const AppSubscriptionPlanSelected(SubscriptionPlan.yearly),
+        );
     context.go(HomeRoutes.main);
   }
 }

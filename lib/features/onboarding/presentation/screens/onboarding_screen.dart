@@ -82,9 +82,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       onTap: () => onLanguagePressed(context),
                       child: Text(
                         language.symbol(l10n),
-                        style: textStyle.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: textStyle.copyWith(fontWeight: FontWeight.w600),
                       ),
                     ),
                   ),
