@@ -27,6 +27,11 @@ class AppLocalizationsRu extends AppLocalizations {
   String get mainScreen => 'Главный экран';
 
   @override
+  String selectedPlan(String planName) {
+    return 'Выбранный тарифный план: $planName';
+  }
+
+  @override
   String get languageEnSymbol => 'EN';
 
   @override

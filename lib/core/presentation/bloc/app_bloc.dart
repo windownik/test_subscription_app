@@ -21,17 +21,17 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   bool _onboardingCompleted = false;
   SubscriptionPlan? _selectedPlan;
 
+  bool _shouldShowHome() => _selectedPlan != null;
+
   AppState _buildLoadedState() {
     return AppStateLoaded(
       onboardingCompleted: _onboardingCompleted,
       selectedPlan: _selectedPlan,
+      shouldShowHome: _shouldShowHome(),
     );
   }
 
-  Future<void> _onStarted(
-    AppStarted event,
-    Emitter<AppState> emit,
-  ) async {
+  Future<void> _onStarted(AppStarted event, Emitter<AppState> emit) async {
     await Future.wait([
       emit.forEach<bool>(
         _onboardingRepository.watchOnboardingCompleted(),
@@ -60,10 +60,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       completed: true,
     );
 
-    result.fold(
-      (_) => emit(const AppStateFailure()),
-      (_) {},
-    );
+    result.fold((_) => emit(const AppStateFailure()), (_) {});
   }
 
   Future<void> _onSubscriptionPlanSelected(
@@ -72,9 +69,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   ) async {
     final result = await _subscriptionPlanRepository.selectPlan(event.plan);
 
-    result.fold(
-      (_) => emit(const AppStateFailure()),
-      (_) {},
-    );
+    result.fold((_) => emit(const AppStateFailure()), (_) {});
   }
 }

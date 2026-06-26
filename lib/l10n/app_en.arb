@@ -6,6 +6,14 @@
   "monthlyPlan": "Monthly",
   "yearlyPlan": "Yearly",
   "mainScreen": "Main screen",
+  "selectedPlan": "Selected plan: {planName}",
+  "@selectedPlan": {
+    "placeholders": {
+      "planName": {
+        "type": "String"
+      }
+    }
+  },
   "languageEnSymbol": "EN",
   "languageRuSymbol": "RU"
 }

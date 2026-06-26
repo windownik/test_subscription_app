@@ -134,6 +134,12 @@ abstract class AppLocalizations {
   /// **'Main screen'**
   String get mainScreen;
 
+  /// No description provided for @selectedPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected plan: {planName}'**
+  String selectedPlan(String planName);
+
   /// No description provided for @languageEnSymbol.
   ///
   /// In en, this message translates to:

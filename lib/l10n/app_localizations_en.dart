@@ -27,6 +27,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mainScreen => 'Main screen';
 
   @override
+  String selectedPlan(String planName) {
+    return 'Selected plan: $planName';
+  }
+
+  @override
   String get languageEnSymbol => 'EN';
 
   @override

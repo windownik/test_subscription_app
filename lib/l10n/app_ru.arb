@@ -6,6 +6,14 @@
   "monthlyPlan": "Помесячная",
   "yearlyPlan": "Годовая",
   "mainScreen": "Главный экран",
+  "selectedPlan": "Выбранный тарифный план: {planName}",
+  "@selectedPlan": {
+    "placeholders": {
+      "planName": {
+        "type": "String"
+      }
+    }
+  },
   "languageEnSymbol": "EN",
   "languageRuSymbol": "RU"
 }

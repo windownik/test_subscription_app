@@ -12,10 +12,12 @@ final class AppStateLoaded extends AppState {
   const AppStateLoaded({
     required this.onboardingCompleted,
     required this.selectedPlan,
+    required this.shouldShowHome,
   });
 
   final bool onboardingCompleted;
   final SubscriptionPlan? selectedPlan;
+  final bool shouldShowHome;
 }
 
 final class AppStateFailure extends AppState {
