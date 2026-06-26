@@ -9,4 +9,5 @@ abstract final class HomeLayout {
   static const double actionButtonIconSize = 20;
   static const double actionButtonsTopPadding = 8;
   static const double actionButtonsTrailingPadding = 16;
+  static const Duration reloadNavigationDelay = Duration(seconds: 1);
 }

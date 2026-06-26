@@ -20,5 +20,6 @@
   "languageEnSymbol": "EN",
   "languageRuSymbol": "RU",
   "languageChangedToRussian": "Language changed to Russian",
-  "languageChangedToEnglish": "Language changed to English"
+  "languageChangedToEnglish": "Language changed to English",
+  "databaseFullyCleared": "Database completely cleared"
 }

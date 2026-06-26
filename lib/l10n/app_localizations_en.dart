@@ -51,4 +51,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get languageChangedToEnglish => 'Language changed to English';
+
+  @override
+  String get databaseFullyCleared => 'Database completely cleared';
 }

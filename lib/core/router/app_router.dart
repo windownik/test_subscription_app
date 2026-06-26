@@ -33,10 +33,6 @@ final GoRouter appRouter = GoRouter(
       return HomeRoutes.main;
     }
 
-    if (state.matchedLocation == HomeRoutes.main) {
-      return OnboardingRoutes.root;
-    }
-
     return null;
   },
   routes: [

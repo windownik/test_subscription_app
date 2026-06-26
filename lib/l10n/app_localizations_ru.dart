@@ -51,4 +51,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get languageChangedToEnglish => 'Язык сменен на английский';
+
+  @override
+  String get databaseFullyCleared => 'База данных полностью очищена';
 }

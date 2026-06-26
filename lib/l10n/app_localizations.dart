@@ -181,6 +181,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Language changed to English'**
   String get languageChangedToEnglish;
+
+  /// No description provided for @databaseFullyCleared.
+  ///
+  /// In en, this message translates to:
+  /// **'Database completely cleared'**
+  String get databaseFullyCleared;
 }
 
 class _AppLocalizationsDelegate
