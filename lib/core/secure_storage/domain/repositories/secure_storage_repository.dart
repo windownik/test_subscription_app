@@ -9,7 +9,5 @@ abstract interface class SecureStorageRepository {
     required String value,
   });
 
-  Future<Either<Failure, String?>> read({required String key});
-
   Future<Either<Failure, void>> delete({required String key});
 }

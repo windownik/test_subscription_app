@@ -74,7 +74,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   }
 
   void completeSubscription(BuildContext context, SubscriptionPlan plan) {
-    context.read<AppBloc>().add(const AppOnboardingCompleted());
     context.read<AppBloc>().add(AppSubscriptionPlanSelected(plan));
   }
 

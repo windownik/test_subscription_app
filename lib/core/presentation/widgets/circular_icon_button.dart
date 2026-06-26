@@ -6,7 +6,6 @@ class CircularIconButton extends StatefulWidget {
   static const double defaultPadding = 16;
   static const double shadowBlurRadius = 8;
   static const double shadowOffsetY = 2;
-  static const double pressedScale = 0.95;
   static const Duration pressAnimationDuration = Duration(milliseconds: 150);
 
   final Widget child;

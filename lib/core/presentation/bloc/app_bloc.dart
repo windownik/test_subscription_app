@@ -8,26 +8,22 @@ import 'package:test_payment_app/core/presentation/bloc/app_state.dart';
 import 'package:test_payment_app/core/presentation/loading_layout.dart';
 import 'package:test_payment_app/core/router/loading_routes.dart';
 import 'package:test_payment_app/features/home/home_routes.dart';
-import 'package:test_payment_app/features/onboarding/domain/repositories/onboarding_repository.dart';
 import 'package:test_payment_app/features/onboarding/onboarding_routes.dart';
 import 'package:test_payment_app/features/subscription/domain/entities/subscription_plan.dart';
 import 'package:test_payment_app/features/subscription/domain/repositories/subscription_plan_repository.dart';
 
 class AppBloc extends Bloc<AppEvent, AppState> {
   AppBloc({
-    required this._onboardingRepository,
     required this._subscriptionPlanRepository,
     required this._languageRepository,
   }) : super(const AppStateInitial()) {
     on<AppStarted>(_onStarted);
-    on<AppOnboardingCompleted>(_onOnboardingCompleted);
     on<AppSubscriptionPlanSelected>(_onSubscriptionPlanSelected);
     on<AppLanguageChanged>(_onLanguageChanged);
     on<AppReloadPressed>(_onReloadPressed);
     on<AppNavigationHandled>(_onNavigationHandled);
   }
 
-  final OnboardingRepository _onboardingRepository;
   final SubscriptionPlanRepository _subscriptionPlanRepository;
   final LanguageRepository _languageRepository;
 
@@ -35,39 +31,11 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     await emit.onEach(
       _watchCombinedState(),
       onData: (data) async {
-        final (onboardingCompleted, selectedPlan, language) = data;
-        final shouldShowHome = selectedPlan != null;
-        final previous = state;
-
-        final navigationRoute = _resolveNavigationRoute(
-          previous: previous,
-          shouldShowHome: shouldShowHome,
-        );
-
-        if (previous is AppStateInitial && navigationRoute != null) {
-          await Future.delayed(LoadingLayout.initialNavigationDelay);
-          if (emit.isDone) {
-            return;
-          }
-        }
-
-        final baseState = previous is AppStateLoaded
-            ? previous
-            : const AppStateLoaded(
-                onboardingCompleted: false,
-                selectedPlan: null,
-                shouldShowHome: false,
-                language: AppLanguage.ru,
-              );
-
-        emit(
-          baseState.copyWith(
-            onboardingCompleted: onboardingCompleted,
-            selectedPlan: selectedPlan,
-            shouldShowHome: shouldShowHome,
-            language: language,
-            navigationRoute: navigationRoute,
-          ),
+        final (selectedPlan, language) = data;
+        await _emitCombinedState(
+          emit,
+          selectedPlan: selectedPlan,
+          language: language,
         );
       },
       onError: (error, stackTrace) {
@@ -78,31 +46,56 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     );
   }
 
-  Stream<(bool, SubscriptionPlan?, AppLanguage)> _watchCombinedState() {
-    final controller = StreamController<(bool, SubscriptionPlan?, AppLanguage)>();
+  Future<void> _emitCombinedState(
+    Emitter<AppState> emit, {
+    required SubscriptionPlan? selectedPlan,
+    required AppLanguage language,
+  }) async {
+    final previous = state;
 
-    var hasOnboarding = false;
+    final navigationRoute = _resolveNavigationRoute(
+      previous: previous,
+      selectedPlan: selectedPlan,
+    );
+
+    if (previous is AppStateInitial && navigationRoute != null) {
+      await Future.delayed(LoadingLayout.initialNavigationDelay);
+      if (emit.isDone) {
+        return;
+      }
+    }
+
+    final baseState = previous is AppStateLoaded
+        ? previous
+        : const AppStateLoaded(
+            selectedPlan: null,
+            language: AppLanguage.ru,
+          );
+
+    emit(
+      baseState.copyWith(
+        selectedPlan: selectedPlan,
+        language: language,
+        navigationRoute: navigationRoute,
+      ),
+    );
+  }
+
+  Stream<(SubscriptionPlan?, AppLanguage)> _watchCombinedState() {
+    final controller = StreamController<(SubscriptionPlan?, AppLanguage)>();
+
     var hasPlan = false;
     var hasLanguage = false;
-    late bool onboardingCompleted;
     late SubscriptionPlan? selectedPlan;
     late AppLanguage language;
 
     void emitIfReady() {
-      if (hasOnboarding && hasPlan && hasLanguage) {
-        controller.add((onboardingCompleted, selectedPlan, language));
+      if (hasPlan && hasLanguage) {
+        controller.add((selectedPlan, language));
       }
     }
 
     final subscriptions = <StreamSubscription<dynamic>>[
-      _onboardingRepository.watchOnboardingCompleted().listen(
-        (completed) {
-          onboardingCompleted = completed;
-          hasOnboarding = true;
-          emitIfReady();
-        },
-        onError: controller.addError,
-      ),
       _subscriptionPlanRepository.watchSelectedPlan().listen(
         (plan) {
           selectedPlan = plan;
@@ -130,33 +123,28 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     return controller.stream;
   }
 
-  Future<void> _onOnboardingCompleted(
-    AppOnboardingCompleted event,
-    Emitter<AppState> emit,
-  ) async {
-    final result = await _onboardingRepository.setOnboardingCompleted(
-      completed: true,
-    );
-
-    result.fold(
-      (_) => emit(
-        const AppStateFailure(navigationRoute: LoadingRoutes.root),
-      ),
-      (_) {},
-    );
-  }
-
   Future<void> _onSubscriptionPlanSelected(
     AppSubscriptionPlanSelected event,
     Emitter<AppState> emit,
   ) async {
     final result = await _subscriptionPlanRepository.selectPlan(event.plan);
 
-    result.fold(
-      (_) => emit(
-        const AppStateFailure(navigationRoute: LoadingRoutes.root),
-      ),
-      (_) {},
+    await result.fold(
+      (failure) async {
+        emit(const AppStateFailure(navigationRoute: LoadingRoutes.root));
+      },
+      (_) async {
+        final current = state;
+        final language = current is AppStateLoaded
+            ? current.language
+            : AppLanguage.ru;
+
+        await _emitCombinedState(
+          emit,
+          selectedPlan: event.plan,
+          language: language,
+        );
+      },
     );
   }
 
@@ -166,11 +154,21 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   ) async {
     final result = await _languageRepository.setLanguage(event.language);
 
-    result.fold(
-      (_) => emit(
-        const AppStateFailure(navigationRoute: LoadingRoutes.root),
-      ),
-      (_) {},
+    await result.fold(
+      (failure) async {
+        emit(const AppStateFailure(navigationRoute: LoadingRoutes.root));
+      },
+      (_) async {
+        final current = state;
+        final selectedPlan =
+            current is AppStateLoaded ? current.selectedPlan : null;
+
+        await _emitCombinedState(
+          emit,
+          selectedPlan: selectedPlan,
+          language: event.language,
+        );
+      },
     );
   }
 
@@ -179,7 +177,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     Emitter<AppState> emit,
   ) async {
     final results = await Future.wait([
-      _onboardingRepository.clearOnboardingData(),
       _subscriptionPlanRepository.clearSelectedPlan(),
       _languageRepository.clearLanguage(),
     ]);
@@ -187,7 +184,14 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     final hasFailure = results.any((result) => result.isLeft());
     if (hasFailure) {
       emit(const AppStateFailure(navigationRoute: LoadingRoutes.root));
+      return;
     }
+
+    await _emitCombinedState(
+      emit,
+      selectedPlan: null,
+      language: AppLanguage.ru,
+    );
   }
 
   void _onNavigationHandled(
@@ -208,13 +212,17 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
   String? _resolveNavigationRoute({
     required AppState previous,
-    required bool shouldShowHome,
+    required SubscriptionPlan? selectedPlan,
   }) {
+    final shouldShowHome = selectedPlan != null;
+
     switch (previous) {
       case AppStateInitial():
       case AppStateFailure():
         return shouldShowHome ? HomeRoutes.main : OnboardingRoutes.root;
-      case AppStateLoaded(shouldShowHome: final previousShouldShowHome):
+      case AppStateLoaded(selectedPlan: final previousPlan):
+        final previousShouldShowHome = previousPlan != null;
+
         if (shouldShowHome && !previousShouldShowHome) {
           return HomeRoutes.main;
         }

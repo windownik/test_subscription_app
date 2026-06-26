@@ -13,34 +13,28 @@ final class AppStateInitial extends AppState {
 
 final class AppStateLoaded extends AppState {
   const AppStateLoaded({
-    required this.onboardingCompleted,
     required this.selectedPlan,
-    required this.shouldShowHome,
     required this.language,
     this.navigationRoute,
   });
 
-  final bool onboardingCompleted;
   final SubscriptionPlan? selectedPlan;
-  final bool shouldShowHome;
   final AppLanguage language;
   @override
   final String? navigationRoute;
 
+  static const Object _selectedPlanUnset = Object();
+
   AppStateLoaded copyWith({
-    bool? onboardingCompleted,
-    SubscriptionPlan? selectedPlan,
-    bool? shouldShowHome,
+    Object? selectedPlan = _selectedPlanUnset,
     AppLanguage? language,
     String? navigationRoute,
     bool clearNavigationRoute = false,
   }) {
-    final resolvedPlan = selectedPlan ?? this.selectedPlan;
-
     return AppStateLoaded(
-      onboardingCompleted: onboardingCompleted ?? this.onboardingCompleted,
-      selectedPlan: resolvedPlan,
-      shouldShowHome: shouldShowHome ?? (resolvedPlan != null),
+      selectedPlan: identical(selectedPlan, _selectedPlanUnset)
+          ? this.selectedPlan
+          : selectedPlan as SubscriptionPlan?,
       language: language ?? this.language,
       navigationRoute: clearNavigationRoute
           ? null

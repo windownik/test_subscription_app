@@ -28,18 +28,6 @@ class SecureStorageRepositoryImpl implements SecureStorageRepository {
   }
 
   @override
-  Future<Either<Failure, String?>> read({required String key}) async {
-    try {
-      final value = await _localDataSource.read(key: key);
-      return Right(value);
-    } on PlatformException catch (error) {
-      return Left(SecureStorageFailure(error.message ?? error.code));
-    } catch (error) {
-      return Left(SecureStorageFailure(error.toString()));
-    }
-  }
-
-  @override
   Future<Either<Failure, void>> delete({required String key}) async {
     try {
       await _localDataSource.delete(key: key);

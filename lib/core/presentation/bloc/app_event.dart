@@ -9,10 +9,6 @@ final class AppStarted extends AppEvent {
   const AppStarted();
 }
 
-final class AppOnboardingCompleted extends AppEvent {
-  const AppOnboardingCompleted();
-}
-
 final class AppSubscriptionPlanSelected extends AppEvent {
   const AppSubscriptionPlanSelected(this.plan);
 
