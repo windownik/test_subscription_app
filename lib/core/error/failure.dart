@@ -13,3 +13,9 @@ final class PaymentFailure extends Failure {
 
   final String message;
 }
+
+final class TariffPlansFailure extends Failure {
+  const TariffPlansFailure(this.message);
+
+  final String message;
+}

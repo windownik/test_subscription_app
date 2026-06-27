@@ -8,8 +8,12 @@ import 'package:test_payment_app/core/secure_storage/data/repositories/secure_st
 import 'package:test_payment_app/core/secure_storage/domain/repositories/secure_storage_repository.dart';
 import 'package:test_payment_app/features/payment/data/repositories/payment_repository_impl.dart';
 import 'package:test_payment_app/features/payment/domain/repositories/payment_repository.dart';
+import 'package:test_payment_app/features/subscription/data/datasources/tariff_plans_remote_data_source.dart';
+import 'package:test_payment_app/features/subscription/data/datasources/tariff_plans_remote_data_source_impl.dart';
 import 'package:test_payment_app/features/subscription/data/repositories/subscription_plan_repository_impl.dart';
+import 'package:test_payment_app/features/subscription/data/repositories/tariff_plans_repository_impl.dart';
 import 'package:test_payment_app/features/subscription/domain/repositories/subscription_plan_repository.dart';
+import 'package:test_payment_app/features/subscription/domain/repositories/tariff_plans_repository.dart';
 import 'package:test_payment_app/features/subscription/presentation/bloc/subscription_bloc.dart';
 
 final GetIt getIt = GetIt.instance;
@@ -33,6 +37,14 @@ Future<void> configureDependencies() async {
 
   getIt.registerLazySingleton<PaymentRepository>(
     () => const PaymentRepositoryImpl(),
+  );
+
+  getIt.registerLazySingleton<TariffPlansRemoteDataSource>(
+    TariffPlansRemoteDataSourceImpl.new,
+  );
+
+  getIt.registerLazySingleton<TariffPlansRepository>(
+    () => TariffPlansRepositoryImpl(getIt<TariffPlansRemoteDataSource>()),
   );
 
   getIt.registerFactory<SubscriptionBloc>(
