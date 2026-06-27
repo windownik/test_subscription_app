@@ -22,9 +22,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tapToContinue => 'Tap to continue';
 
   @override
-  String get startWork => 'Start work';
-
-  @override
   String get onboardingTodayDiscount => 'Discount available today only';
 
   @override

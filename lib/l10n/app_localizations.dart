@@ -122,12 +122,6 @@ abstract class AppLocalizations {
   /// **'Tap to continue'**
   String get tapToContinue;
 
-  /// No description provided for @startWork.
-  ///
-  /// In en, this message translates to:
-  /// **'Start work'**
-  String get startWork;
-
   /// No description provided for @onboardingTodayDiscount.
   ///
   /// In en, this message translates to:

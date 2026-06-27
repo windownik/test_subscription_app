@@ -22,9 +22,6 @@ class AppLocalizationsRu extends AppLocalizations {
   String get tapToContinue => 'Нажми, чтобы продолжить';
 
   @override
-  String get startWork => 'Начать работу';
-
-  @override
   String get onboardingTodayDiscount => 'Только сегодня действует скидка';
 
   @override

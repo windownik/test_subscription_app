@@ -15,16 +15,12 @@ class SubscriptionState {
 
   bool get isPlanSelectionEnabled => paymentProcessStatus.isIdle;
 
-  bool get isPaymentInProgress => paymentProcessStatus.isInProgress;
-
   SubscriptionState copyWith({
     SubscriptionPlan? selectedPlan,
     PaymentProcessStatus? paymentProcessStatus,
-    bool clearSelectedPlan = false,
   }) {
     return SubscriptionState(
-      selectedPlan:
-          clearSelectedPlan ? null : (selectedPlan ?? this.selectedPlan),
+      selectedPlan: selectedPlan ?? this.selectedPlan,
       paymentProcessStatus: paymentProcessStatus ?? this.paymentProcessStatus,
     );
   }

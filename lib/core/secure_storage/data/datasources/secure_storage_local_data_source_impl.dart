@@ -24,11 +24,6 @@ class SecureStorageLocalDataSourceImpl implements SecureStorageLocalDataSource {
   }
 
   @override
-  Future<String?> read({required String key}) {
-    return _storage.read(key: key);
-  }
-
-  @override
   Future<void> write({required String key, required String value}) async {
     await _storage.write(key: key, value: value);
     _watchControllers[key]?.add(value);

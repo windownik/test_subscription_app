@@ -7,6 +7,4 @@ abstract final class HomeLayout {
   static const double actionButtonSize = 44;
   static const double actionButtonPadding = 10;
   static const double actionButtonIconSize = 20;
-  static const double actionButtonsTopPadding = 8;
-  static const double actionButtonsTrailingPadding = 16;
 }
