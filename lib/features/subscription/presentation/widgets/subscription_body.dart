@@ -7,6 +7,9 @@ class SubscriptionBody extends StatelessWidget {
   final String noSubscriptionText;
   final String monthlyPlanLabel;
   final String yearlyPlanLabel;
+  final String? monthlyPriceText;
+  final String? yearlyPriceText;
+  final String? yearlyDiscountText;
   final bool isMonthlySelected;
   final bool isYearlySelected;
   final VoidCallback onMonthlyPlanPressed;
@@ -23,6 +26,9 @@ class SubscriptionBody extends StatelessWidget {
     required this.onMonthlyPlanPressed,
     required this.onYearlyPlanPressed,
     required this.onContinuePressed,
+    this.monthlyPriceText,
+    this.yearlyPriceText,
+    this.yearlyDiscountText,
   });
 
   @override
@@ -47,12 +53,15 @@ class SubscriptionBody extends StatelessWidget {
                 const SizedBox(height: SubscriptionLayout.contentSpacing),
                 SubscriptionPlanCheckboxRow(
                   label: monthlyPlanLabel,
+                  priceText: monthlyPriceText,
                   isSelected: isMonthlySelected,
                   onPressed: onMonthlyPlanPressed,
                 ),
                 const SizedBox(height: SubscriptionLayout.planCheckboxSpacing),
                 SubscriptionPlanCheckboxRow(
                   label: yearlyPlanLabel,
+                  priceText: yearlyPriceText,
+                  discountText: yearlyDiscountText,
                   isSelected: isYearlySelected,
                   onPressed: onYearlyPlanPressed,
                 ),

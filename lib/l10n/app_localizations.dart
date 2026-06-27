@@ -217,6 +217,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Database completely cleared'**
   String get databaseFullyCleared;
+
+  /// No description provided for @planPricePerMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'{price} / month'**
+  String planPricePerMonth(String price);
+
+  /// No description provided for @planPricePerYear.
+  ///
+  /// In en, this message translates to:
+  /// **'{price} / year'**
+  String planPricePerYear(String price);
+
+  /// No description provided for @yearlyPlanDiscount.
+  ///
+  /// In en, this message translates to:
+  /// **'Save {discountPercent}%'**
+  String yearlyPlanDiscount(int discountPercent);
 }
 
 class _AppLocalizationsDelegate

@@ -10,13 +10,19 @@ import 'package:test_payment_app/core/router/loading_routes.dart';
 import 'package:test_payment_app/features/home/home_routes.dart';
 import 'package:test_payment_app/features/onboarding/onboarding_routes.dart';
 import 'package:test_payment_app/features/subscription/domain/entities/subscription_plan.dart';
+import 'package:test_payment_app/features/subscription/domain/entities/tariff_plans.dart';
 import 'package:test_payment_app/features/subscription/domain/repositories/subscription_plan_repository.dart';
+import 'package:test_payment_app/features/subscription/domain/repositories/tariff_plans_repository.dart';
 
 class AppBloc extends Bloc<AppEvent, AppState> {
   AppBloc({
-    required this._subscriptionPlanRepository,
-    required this._languageRepository,
-  }) : super(const AppStateInitial()) {
+    required SubscriptionPlanRepository subscriptionPlanRepository,
+    required LanguageRepository languageRepository,
+    required TariffPlansRepository tariffPlansRepository,
+  })  : _subscriptionPlanRepository = subscriptionPlanRepository,
+        _languageRepository = languageRepository,
+        _tariffPlansRepository = tariffPlansRepository,
+        super(const AppStateInitial()) {
     on<AppStarted>(_onStarted);
     on<AppSubscriptionPlanSelected>(_onSubscriptionPlanSelected);
     on<AppLanguageChanged>(_onLanguageChanged);
@@ -26,8 +32,15 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
   final SubscriptionPlanRepository _subscriptionPlanRepository;
   final LanguageRepository _languageRepository;
+  final TariffPlansRepository _tariffPlansRepository;
 
   Future<void> _onStarted(AppStarted event, Emitter<AppState> emit) async {
+    final tariffPlansResult = await _tariffPlansRepository.getTariffPlans();
+    final TariffPlans? tariffPlans = tariffPlansResult.fold(
+      (_) => null,
+      (plans) => plans,
+    );
+
     await emit.onEach(
       _watchCombinedState(),
       onData: (data) async {
@@ -36,6 +49,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           emit,
           selectedPlan: selectedPlan,
           language: language,
+          tariffPlans: tariffPlans,
         );
       },
       onError: (error, stackTrace) {
@@ -50,6 +64,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     Emitter<AppState> emit, {
     required SubscriptionPlan? selectedPlan,
     required AppLanguage language,
+    required TariffPlans? tariffPlans,
   }) async {
     final previous = state;
 
@@ -67,15 +82,17 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
     final baseState = previous is AppStateLoaded
         ? previous
-        : const AppStateLoaded(
+        : AppStateLoaded(
             selectedPlan: null,
             language: AppLanguage.ru,
+            tariffPlans: tariffPlans,
           );
 
     emit(
       baseState.copyWith(
         selectedPlan: selectedPlan,
         language: language,
+        tariffPlans: tariffPlans,
         navigationRoute: navigationRoute,
       ),
     );
@@ -135,14 +152,15 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       },
       (_) async {
         final current = state;
-        final language = current is AppStateLoaded
-            ? current.language
-            : AppLanguage.ru;
+        if (current is! AppStateLoaded) {
+          return;
+        }
 
         await _emitCombinedState(
           emit,
           selectedPlan: event.plan,
-          language: language,
+          language: current.language,
+          tariffPlans: current.tariffPlans,
         );
       },
     );
@@ -160,13 +178,15 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       },
       (_) async {
         final current = state;
-        final selectedPlan =
-            current is AppStateLoaded ? current.selectedPlan : null;
+        if (current is! AppStateLoaded) {
+          return;
+        }
 
         await _emitCombinedState(
           emit,
-          selectedPlan: selectedPlan,
+          selectedPlan: current.selectedPlan,
           language: event.language,
+          tariffPlans: current.tariffPlans,
         );
       },
     );
@@ -176,6 +196,11 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     AppReloadPressed event,
     Emitter<AppState> emit,
   ) async {
+    final current = state;
+    if (current is! AppStateLoaded) {
+      return;
+    }
+
     final results = await Future.wait([
       _subscriptionPlanRepository.clearSelectedPlan(),
       _languageRepository.clearLanguage(),
@@ -191,6 +216,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       emit,
       selectedPlan: null,
       language: AppLanguage.ru,
+      tariffPlans: current.tariffPlans,
     );
   }
 

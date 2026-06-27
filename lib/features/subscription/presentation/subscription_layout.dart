@@ -6,6 +6,10 @@ abstract final class SubscriptionLayout {
   static const double planCheckboxSpacing = 12;
   static const double checkboxIconSize = 24;
   static const double checkboxLabelSpacing = 12;
+  static const double planPriceTopSpacing = 4;
+  static const double planDiscountTopSpacing = 2;
+  static const double planPriceFontSize = 14;
+  static const double planDiscountFontSize = 13;
   static const double continueButtonTopSpacing = 24;
   static const double continueButtonHeight = 50;
   static const double continueButtonBorderRadius = 12;

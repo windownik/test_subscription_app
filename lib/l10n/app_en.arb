@@ -26,5 +26,29 @@
   "languageRuSymbol": "RU",
   "languageChangedToRussian": "Language changed to Russian",
   "languageChangedToEnglish": "Language changed to English",
-  "databaseFullyCleared": "Database completely cleared"
+  "databaseFullyCleared": "Database completely cleared",
+  "planPricePerMonth": "{price} / month",
+  "@planPricePerMonth": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "planPricePerYear": "{price} / year",
+  "@planPricePerYear": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "yearlyPlanDiscount": "Save {discountPercent}%",
+  "@yearlyPlanDiscount": {
+    "placeholders": {
+      "discountPercent": {
+        "type": "int"
+      }
+    }
+  }
 }

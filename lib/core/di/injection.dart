@@ -57,6 +57,7 @@ Future<void> configureDependencies() async {
     () => AppBloc(
       subscriptionPlanRepository: getIt<SubscriptionPlanRepository>(),
       languageRepository: getIt<LanguageRepository>(),
+      tariffPlansRepository: getIt<TariffPlansRepository>(),
     ),
   );
 }

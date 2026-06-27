@@ -69,4 +69,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get databaseFullyCleared => 'Database completely cleared';
+
+  @override
+  String planPricePerMonth(String price) {
+    return '$price / month';
+  }
+
+  @override
+  String planPricePerYear(String price) {
+    return '$price / year';
+  }
+
+  @override
+  String yearlyPlanDiscount(int discountPercent) {
+    return 'Save $discountPercent%';
+  }
 }

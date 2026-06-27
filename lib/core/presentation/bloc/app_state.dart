@@ -1,5 +1,6 @@
 import 'package:test_payment_app/core/locale/app_language.dart';
 import 'package:test_payment_app/features/subscription/domain/entities/subscription_plan.dart';
+import 'package:test_payment_app/features/subscription/domain/entities/tariff_plans.dart';
 
 sealed class AppState {
   const AppState();
@@ -15,11 +16,13 @@ final class AppStateLoaded extends AppState {
   const AppStateLoaded({
     required this.selectedPlan,
     required this.language,
+    this.tariffPlans,
     this.navigationRoute,
   });
 
   final SubscriptionPlan? selectedPlan;
   final AppLanguage language;
+  final TariffPlans? tariffPlans;
   @override
   final String? navigationRoute;
 
@@ -28,6 +31,7 @@ final class AppStateLoaded extends AppState {
   AppStateLoaded copyWith({
     Object? selectedPlan = _selectedPlanUnset,
     AppLanguage? language,
+    TariffPlans? tariffPlans,
     String? navigationRoute,
     bool clearNavigationRoute = false,
   }) {
@@ -36,6 +40,7 @@ final class AppStateLoaded extends AppState {
           ? this.selectedPlan
           : selectedPlan as SubscriptionPlan?,
       language: language ?? this.language,
+      tariffPlans: tariffPlans ?? this.tariffPlans,
       navigationRoute: clearNavigationRoute
           ? null
           : (navigationRoute ?? this.navigationRoute),
