@@ -27,6 +27,8 @@
   "languageChangedToRussian": "Language changed to Russian",
   "languageChangedToEnglish": "Language changed to English",
   "databaseFullyCleared": "Database completely cleared",
+  "loadingError": "Failed to load app data",
+  "retry": "Retry",
   "planPricePerMonth": "{price} / month",
   "@planPricePerMonth": {
     "placeholders": {

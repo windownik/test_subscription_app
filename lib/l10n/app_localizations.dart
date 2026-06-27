@@ -218,6 +218,18 @@ abstract class AppLocalizations {
   /// **'Database completely cleared'**
   String get databaseFullyCleared;
 
+  /// No description provided for @loadingError.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load app data'**
+  String get loadingError;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
   /// No description provided for @planPricePerMonth.
   ///
   /// In en, this message translates to:

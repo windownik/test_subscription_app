@@ -71,6 +71,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get databaseFullyCleared => 'База данных полностью очищена';
 
   @override
+  String get loadingError => 'Не удалось загрузить данные приложения';
+
+  @override
+  String get retry => 'Повторить';
+
+  @override
   String planPricePerMonth(String price) {
     return '$price / мес.';
   }

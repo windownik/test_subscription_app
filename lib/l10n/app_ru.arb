@@ -27,6 +27,8 @@
   "languageChangedToRussian": "Язык сменен на русский",
   "languageChangedToEnglish": "Язык сменен на английский",
   "databaseFullyCleared": "База данных полностью очищена",
+  "loadingError": "Не удалось загрузить данные приложения",
+  "retry": "Повторить",
   "planPricePerMonth": "{price} / мес.",
   "@planPricePerMonth": {
     "placeholders": {

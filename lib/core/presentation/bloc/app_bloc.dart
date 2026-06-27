@@ -27,6 +27,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     on<AppSubscriptionPlanSelected>(_onSubscriptionPlanSelected);
     on<AppLanguageChanged>(_onLanguageChanged);
     on<AppReloadPressed>(_onReloadPressed);
+    on<AppRetryPressed>(_onRetryPressed);
     on<AppNavigationHandled>(_onNavigationHandled);
   }
 
@@ -35,6 +36,18 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   final TariffPlansRepository _tariffPlansRepository;
 
   Future<void> _onStarted(AppStarted event, Emitter<AppState> emit) async {
+    await _bootstrapApp(emit);
+  }
+
+  Future<void> _onRetryPressed(
+    AppRetryPressed event,
+    Emitter<AppState> emit,
+  ) async {
+    emit(const AppStateInitial());
+    await _bootstrapApp(emit);
+  }
+
+  Future<void> _bootstrapApp(Emitter<AppState> emit) async {
     final tariffPlansResult = await _tariffPlansRepository.getTariffPlans();
     final TariffPlans? tariffPlans = tariffPlansResult.fold(
       (_) => null,

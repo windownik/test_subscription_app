@@ -19,6 +19,10 @@ final class AppReloadPressed extends AppEvent {
   const AppReloadPressed();
 }
 
+final class AppRetryPressed extends AppEvent {
+  const AppRetryPressed();
+}
+
 final class AppLanguageChanged extends AppEvent {
   const AppLanguageChanged(this.language);
 

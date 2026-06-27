@@ -71,6 +71,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get databaseFullyCleared => 'Database completely cleared';
 
   @override
+  String get loadingError => 'Failed to load app data';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
   String planPricePerMonth(String price) {
     return '$price / month';
   }
