@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_payment_app/core/presentation/bloc/app_bloc.dart';
 import 'package:test_payment_app/core/presentation/bloc/app_event.dart';
 import 'package:test_payment_app/core/presentation/bloc/app_state.dart';
+import 'package:test_payment_app/core/presentation/widgets/loading_body.dart';
 import 'package:test_payment_app/features/payment/domain/entities/payment_process_status.dart';
 import 'package:test_payment_app/features/subscription/domain/entities/subscription_plan.dart';
 import 'package:test_payment_app/features/subscription/presentation/bloc/subscription_bloc.dart';
@@ -31,6 +32,10 @@ class SubscriptionScreen extends StatelessWidget {
         child: SafeArea(
           child: BlocBuilder<AppBloc, AppState>(
             buildWhen: (previous, current) {
+              if (previous.runtimeType != current.runtimeType) {
+                return true;
+              }
+
               final previousTariffPlans = switch (previous) {
                 AppStateLoaded(:final tariffPlans) => tariffPlans,
                 _ => null,
@@ -48,6 +53,10 @@ class SubscriptionScreen extends StatelessWidget {
                 _ => null,
               };
 
+              if (tariffPlans == null) {
+                return LoadingBody(appTitle: l10n.payApp);
+              }
+
               return BlocBuilder<SubscriptionBloc, SubscriptionState>(
                 buildWhen: (previous, current) =>
                     previous.selectedPlan != current.selectedPlan ||
@@ -61,11 +70,9 @@ class SubscriptionScreen extends StatelessWidget {
                     noSubscriptionText: l10n.noSubscription,
                     monthlyPlanLabel: l10n.monthlyPlan,
                     yearlyPlanLabel: l10n.yearlyPlan,
-                    monthlyPriceText:
-                        tariffPlans?.monthlyPriceLabel(l10n),
-                    yearlyPriceText: tariffPlans?.yearlyPriceLabel(l10n),
-                    yearlyDiscountText:
-                        tariffPlans?.yearlyDiscountLabel(l10n),
+                    monthlyPriceText: tariffPlans.monthlyPriceLabel(l10n),
+                    yearlyPriceText: tariffPlans.yearlyPriceLabel(l10n),
+                    yearlyDiscountText: tariffPlans.yearlyDiscountLabel(l10n),
                     isMonthlySelected:
                         state.selectedPlan == SubscriptionPlan.monthly,
                     isYearlySelected:

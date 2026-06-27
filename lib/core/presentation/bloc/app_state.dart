@@ -16,13 +16,13 @@ final class AppStateLoaded extends AppState {
   const AppStateLoaded({
     required this.selectedPlan,
     required this.language,
-    this.tariffPlans,
+    required this.tariffPlans,
     this.navigationRoute,
   });
 
   final SubscriptionPlan? selectedPlan;
   final AppLanguage language;
-  final TariffPlans? tariffPlans;
+  final TariffPlans tariffPlans;
   @override
   final String? navigationRoute;
 

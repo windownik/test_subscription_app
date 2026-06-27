@@ -49,25 +49,28 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
   Future<void> _bootstrapApp(Emitter<AppState> emit) async {
     final tariffPlansResult = await _tariffPlansRepository.getTariffPlans();
-    final TariffPlans? tariffPlans = tariffPlansResult.fold(
-      (_) => null,
-      (plans) => plans,
-    );
 
-    await emit.onEach(
-      _watchCombinedState(),
-      onData: (data) async {
-        final (selectedPlan, language) = data;
-        await _emitCombinedState(
-          emit,
-          selectedPlan: selectedPlan,
-          language: language,
-          tariffPlans: tariffPlans,
-        );
+    await tariffPlansResult.fold(
+      (_) async {
+        emit(const AppStateFailure(navigationRoute: LoadingRoutes.root));
       },
-      onError: (error, stackTrace) {
-        emit(
-          const AppStateFailure(navigationRoute: LoadingRoutes.root),
+      (tariffPlans) async {
+        await emit.onEach(
+          _watchCombinedState(),
+          onData: (data) async {
+            final (selectedPlan, language) = data;
+            await _emitCombinedState(
+              emit,
+              selectedPlan: selectedPlan,
+              language: language,
+              tariffPlans: tariffPlans,
+            );
+          },
+          onError: (error, stackTrace) {
+            emit(
+              const AppStateFailure(navigationRoute: LoadingRoutes.root),
+            );
+          },
         );
       },
     );
@@ -77,7 +80,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     Emitter<AppState> emit, {
     required SubscriptionPlan? selectedPlan,
     required AppLanguage language,
-    required TariffPlans? tariffPlans,
+    required TariffPlans tariffPlans,
   }) async {
     final previous = state;
 
