@@ -3,9 +3,8 @@ import 'package:test_payment_app/features/payment/domain/entities/payment_proces
 import 'package:test_payment_app/features/subscription/presentation/subscription_layout.dart';
 import 'package:test_payment_app/l10n/app_localizations.dart';
 
-typedef SubscriptionContinueButtonGradient = ({
-  Color start,
-  Color end,
+typedef SubscriptionContinueButtonStyle = ({
+  Color backgroundColor,
   Color label,
 });
 
@@ -20,33 +19,25 @@ extension SubscriptionPaymentStatusStyle on PaymentProcessStatus {
     };
   }
 
-  SubscriptionContinueButtonGradient get buttonGradient {
+  SubscriptionContinueButtonStyle get buttonStyle {
     if (this == PaymentProcessStatus.error) {
       return (
-        start: SubscriptionLayout.continueButtonErrorGradientStart,
-        end: SubscriptionLayout.continueButtonErrorGradientEnd,
-        label: SubscriptionLayout.continueButtonLabelColorOnError,
+        backgroundColor: SubscriptionLayout.continueButtonErrorColor,
+        label: SubscriptionLayout.continueButtonLabelColor,
       );
     }
 
     final progress = _successProgress;
-    final start = Color.lerp(
-      SubscriptionLayout.continueButtonBlueGradientStart,
-      SubscriptionLayout.continueButtonGreenGradientStart,
-      progress,
-    )!;
-    final end = Color.lerp(
-      SubscriptionLayout.continueButtonBlueGradientEnd,
-      SubscriptionLayout.continueButtonGreenGradientEnd,
-      progress,
-    )!;
-    final label = Color.lerp(
-      SubscriptionLayout.continueButtonLabelColorOnBlue,
-      SubscriptionLayout.continueButtonLabelColorOnGreen,
+    final backgroundColor = Color.lerp(
+      SubscriptionLayout.continueButtonBlueColor,
+      SubscriptionLayout.continueButtonGreenColor,
       progress,
     )!;
 
-    return (start: start, end: end, label: label);
+    return (
+      backgroundColor: backgroundColor,
+      label: SubscriptionLayout.continueButtonLabelColor,
+    );
   }
 
   double get _successProgress {

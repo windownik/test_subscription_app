@@ -7,8 +7,7 @@ class SubscriptionContinueButton extends StatefulWidget {
   static const double disabledOpacity = 0.4;
 
   final String label;
-  final Color gradientStartColor;
-  final Color gradientEndColor;
+  final Color backgroundColor;
   final Color labelColor;
   final bool isEnabled;
   final bool isDimmed;
@@ -17,8 +16,7 @@ class SubscriptionContinueButton extends StatefulWidget {
   const SubscriptionContinueButton({
     super.key,
     required this.label,
-    required this.gradientStartColor,
-    required this.gradientEndColor,
+    required this.backgroundColor,
     required this.labelColor,
     required this.isEnabled,
     this.isDimmed = false,
@@ -89,14 +87,7 @@ class _SubscriptionContinueButtonState extends State<SubscriptionContinueButton>
             height: SubscriptionLayout.continueButtonHeight,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  widget.gradientStartColor,
-                  widget.gradientEndColor,
-                ],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-              ),
+              color: widget.backgroundColor,
               borderRadius: BorderRadius.circular(
                 SubscriptionLayout.continueButtonBorderRadius,
               ),

@@ -26,13 +26,12 @@ class SubscriptionContinueButtonStream extends StatelessWidget {
       builder: (context, snapshot) {
         final state = snapshot.data ?? bloc.state;
         final status = state.paymentProcessStatus;
-        final gradient = status.buttonGradient;
+        final buttonStyle = status.buttonStyle;
 
         return SubscriptionContinueButton(
           label: status.buttonLabel(l10n),
-          gradientStartColor: gradient.start,
-          gradientEndColor: gradient.end,
-          labelColor: gradient.label,
+          backgroundColor: buttonStyle.backgroundColor,
+          labelColor: buttonStyle.label,
           isEnabled: state.isContinueEnabled,
           isDimmed:
               state.selectedPlan == null &&
