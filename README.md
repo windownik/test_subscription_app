@@ -1,17 +1,66 @@
 # test_payment_app
 
-A new Flutter project.
+Тестовое Flutter-приложение с демонстрацией подписки и оплаты. Реализован iOS-подобный интерфейс (Cupertino), онбординг, выбор тарифного плана (месячный / годовой), имитация платёжного процесса и главный экран после покупки.
 
-## Getting Started
+## Что делает приложение
 
-This project is a starting point for a Flutter application.
+1. **Загрузка** — при старте подтягиваются тарифы и сохранённые настройки (язык, выбранный план).
+2. **Онбординг** — показывается новым пользователям.
+3. **Подписка** — выбор месячного или годового плана с ценами из API (сейчас — mock).
+4. **Оплата** — имитация шагов покупки (создание заказа → проверка → успех).
+5. **Главный экран** — отображение активного плана и переключение языка (RU / EN).
 
-A few resources to get you started if this is your first Flutter project:
+## Стек
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+- **Flutter** + **Dart** (Clean Architecture, feature-first)
+- **flutter_bloc** — управление состоянием
+- **go_router** — навигация
+- **get_it** — dependency injection
+- **flutter_secure_storage** — локальное хранение настроек
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Требования
+
+| Компонент | Версия |
+|-----------|--------|
+| Dart SDK  | `^3.12.1` (см. `pubspec.yaml`) |
+| Flutter   | `3.44.x` или новее (совместим с Dart 3.12.1) |
+
+Проверить версию:
+
+```bash
+flutter --version
+dart --version
+```
+
+## Запуск
+
+```bash
+# 1. Установить зависимости
+flutter pub get
+
+# 2. Сгенерировать локализацию (если ещё не сгенерирована)
+flutter gen-l10n
+
+# 3. Запустить на подключённом устройстве или эмуляторе
+flutter run
+```
+
+Запуск на конкретной платформе:
+
+```bash
+flutter run -d ios
+flutter run -d android
+```
+
+## Структура
+
+```
+lib/
+├── core/           # DI, роутер, общие BLoC и виджеты
+├── features/
+│   ├── onboarding/
+│   ├── subscription/
+│   ├── payment/
+│   └── home/
+└── l10n/           # локализация (RU / EN)
+```
