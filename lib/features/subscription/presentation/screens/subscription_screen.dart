@@ -10,6 +10,7 @@ import 'package:test_payment_app/features/subscription/domain/entities/subscript
 import 'package:test_payment_app/features/subscription/presentation/bloc/subscription_bloc.dart';
 import 'package:test_payment_app/features/subscription/presentation/bloc/subscription_event.dart';
 import 'package:test_payment_app/features/subscription/presentation/bloc/subscription_state.dart';
+import 'package:test_payment_app/features/subscription/presentation/extensions/subscription_payment_status_style_extension.dart';
 import 'package:test_payment_app/features/subscription/presentation/extensions/tariff_plans_formatting_extension.dart';
 import 'package:test_payment_app/features/subscription/presentation/subscription_layout.dart';
 import 'package:test_payment_app/features/subscription/presentation/widgets/subscription_body.dart';
@@ -49,8 +50,13 @@ class SubscriptionScreen extends StatelessWidget {
 
               return BlocBuilder<SubscriptionBloc, SubscriptionState>(
                 buildWhen: (previous, current) =>
-                    previous.selectedPlan != current.selectedPlan,
+                    previous.selectedPlan != current.selectedPlan ||
+                    previous.paymentProcessStatus !=
+                        current.paymentProcessStatus,
                 builder: (context, state) {
+                  final paymentStatus = state.paymentProcessStatus;
+                  final buttonStyle = paymentStatus.buttonStyle;
+
                   return SubscriptionBody(
                     noSubscriptionText: l10n.noSubscription,
                     monthlyPlanLabel: l10n.monthlyPlan,
@@ -64,6 +70,13 @@ class SubscriptionScreen extends StatelessWidget {
                         state.selectedPlan == SubscriptionPlan.monthly,
                     isYearlySelected:
                         state.selectedPlan == SubscriptionPlan.yearly,
+                    continueButtonLabel: paymentStatus.buttonLabel(l10n),
+                    continueButtonBackgroundColor:
+                        buttonStyle.backgroundColor,
+                    continueButtonLabelColor: buttonStyle.label,
+                    isContinueEnabled: state.isContinueEnabled,
+                    isContinueDimmed:
+                        state.selectedPlan == null && paymentStatus.isIdle,
                     onMonthlyPlanPressed: () => onMonthlyPlanPressed(context),
                     onYearlyPlanPressed: () => onYearlyPlanPressed(context),
                     onContinuePressed: () => onContinuePressed(context),

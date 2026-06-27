@@ -15,7 +15,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get welcomeToApp => 'Welcome to app';
 
   @override
+  String get bestSubscriptionOption =>
+      'The best subscription option in our app';
+
+  @override
+  String get tapToContinue => 'Tap to continue';
+
+  @override
   String get startWork => 'Start work';
+
+  @override
+  String get onboardingTodayDiscount => 'Discount available today only';
 
   @override
   String get noSubscription => 'You don\'t have a subscription, choose a plan';

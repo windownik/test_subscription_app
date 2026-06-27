@@ -110,11 +110,29 @@ abstract class AppLocalizations {
   /// **'Welcome to app'**
   String get welcomeToApp;
 
+  /// No description provided for @bestSubscriptionOption.
+  ///
+  /// In en, this message translates to:
+  /// **'The best subscription option in our app'**
+  String get bestSubscriptionOption;
+
+  /// No description provided for @tapToContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to continue'**
+  String get tapToContinue;
+
   /// No description provided for @startWork.
   ///
   /// In en, this message translates to:
   /// **'Start work'**
   String get startWork;
+
+  /// No description provided for @onboardingTodayDiscount.
+  ///
+  /// In en, this message translates to:
+  /// **'Discount available today only'**
+  String get onboardingTodayDiscount;
 
   /// No description provided for @noSubscription.
   ///

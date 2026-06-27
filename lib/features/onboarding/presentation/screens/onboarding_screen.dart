@@ -50,10 +50,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             children: [
               OnboardingWelcomeBody(
                 welcomeText: l10n.welcomeToApp,
+                subscriptionOptionText: l10n.bestSubscriptionOption,
+                tapToContinueText: l10n.tapToContinue,
                 onContinue: onContinuePressed,
               ),
               OnboardingStartBody(
-                startWorkLabel: l10n.startWork,
+                discountText: l10n.onboardingTodayDiscount,
+                continueLabel: l10n.continueButton,
                 onStartWorkPressed: () => onStartWorkPressed(context),
               ),
             ],
@@ -118,7 +121,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   void onStartWorkPressed(BuildContext context) {
-    context.push(SubscriptionRoutes.plans);
+    context.go(SubscriptionRoutes.plans);
   }
 
   void onPageChanged(int index) {

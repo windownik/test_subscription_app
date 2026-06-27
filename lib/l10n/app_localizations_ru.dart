@@ -15,7 +15,17 @@ class AppLocalizationsRu extends AppLocalizations {
   String get welcomeToApp => 'Добро пожаловать';
 
   @override
+  String get bestSubscriptionOption =>
+      'В нашем приложении лучший вариант подписки';
+
+  @override
+  String get tapToContinue => 'Нажми, чтобы продолжить';
+
+  @override
   String get startWork => 'Начать работу';
+
+  @override
+  String get onboardingTodayDiscount => 'Только сегодня действует скидка';
 
   @override
   String get noSubscription => 'У вас нет подписки, выберите план';

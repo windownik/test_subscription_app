@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:test_payment_app/features/subscription/presentation/subscription_layout.dart';
-import 'package:test_payment_app/features/subscription/presentation/widgets/subscription_continue_button_stream.dart';
+import 'package:test_payment_app/features/subscription/presentation/widgets/subscription_continue_button.dart';
 import 'package:test_payment_app/features/subscription/presentation/widgets/subscription_plan_checkbox_row.dart';
 
 class SubscriptionBody extends StatelessWidget {
@@ -12,6 +12,11 @@ class SubscriptionBody extends StatelessWidget {
   final String? yearlyDiscountText;
   final bool isMonthlySelected;
   final bool isYearlySelected;
+  final String continueButtonLabel;
+  final Color continueButtonBackgroundColor;
+  final Color continueButtonLabelColor;
+  final bool isContinueEnabled;
+  final bool isContinueDimmed;
   final VoidCallback onMonthlyPlanPressed;
   final VoidCallback onYearlyPlanPressed;
   final VoidCallback onContinuePressed;
@@ -23,6 +28,11 @@ class SubscriptionBody extends StatelessWidget {
     required this.yearlyPlanLabel,
     required this.isMonthlySelected,
     required this.isYearlySelected,
+    required this.continueButtonLabel,
+    required this.continueButtonBackgroundColor,
+    required this.continueButtonLabelColor,
+    required this.isContinueEnabled,
+    required this.isContinueDimmed,
     required this.onMonthlyPlanPressed,
     required this.onYearlyPlanPressed,
     required this.onContinuePressed,
@@ -69,7 +79,12 @@ class SubscriptionBody extends StatelessWidget {
             ),
           ),
           const SizedBox(height: SubscriptionLayout.continueButtonTopSpacing),
-          SubscriptionContinueButtonStream(
+          SubscriptionContinueButton(
+            label: continueButtonLabel,
+            backgroundColor: continueButtonBackgroundColor,
+            labelColor: continueButtonLabelColor,
+            isEnabled: isContinueEnabled,
+            isDimmed: isContinueDimmed,
             onPressed: onContinuePressed,
           ),
         ],
